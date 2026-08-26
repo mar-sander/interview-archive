@@ -1,0 +1,242 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3B3D40">
+  <meta name="description" content="高校生の就職・大学入試面接に向けて、質問の意図と定着性・活躍性を考えるための面接想定質問集です。">
+
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>面接想定質問集｜問いの裏側を読む</title>
+</head>
+<body class="auth-locked">
+
+  <!-- ===== 入室パスワード認証 ===== -->
+  <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <form class="auth-box" id="authForm" novalidate>
+      <p class="auth-kicker">INTERVIEW QUESTION ARCHIVE</p>
+      <h1 id="authTitle">入室パスワード</h1>
+      <p class="auth-copy">このサイトを閲覧するには、パスワードを入力してください。</p>
+
+      <div class="auth-field">
+        <label for="authPassword">パスワード</label>
+        <div class="auth-input-row">
+          <input
+            id="authPassword"
+            class="auth-password"
+            type="text"
+            inputmode="text"
+            lang="ja"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            enterkeyhint="go"
+            aria-describedby="authImeNote authError"
+          >
+        </div>
+        <p class="auth-ime-note" id="authImeNote">日本語入力に対応しています。</p>
+      </div>
+
+      <p class="auth-error" id="authError" aria-live="polite"></p>
+      <button class="btn accent auth-submit" type="submit">入室する</button>
+      <p class="auth-note">一度認証すると、この端末の同じブラウザーでは次回から自動で入室します。サイトデータを削除した場合や、別のブラウザー・端末を使う場合は再入力が必要です。</p>
+    </form>
+  </div>
+
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <div class="app">
+    <header class="topbar">
+      <button class="menu-btn" id="menuButton" type="button" aria-label="メニューを開く" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+      <div class="brand-mini">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>INTERVIEW QUESTION ARCHIVE</span>
+      </div>
+
+      <div class="top-status" id="topStatus">問いの裏側を読む</div>
+
+      <button class="btn accent compact" id="randomTopButton" type="button">ランダム1問</button>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" id="sidebar" aria-label="サイト内メニュー">
+        <p class="sidebar-title">CONTENTS</p>
+
+        <nav class="nav" aria-label="メインナビゲーション">
+          <button class="nav-button active" type="button" data-view="home">
+            <span class="nav-num">00</span><span>HOME</span>
+          </button>
+          <button class="nav-button" type="button" data-view="guide">
+            <span class="nav-num">01</span><span>面接の考え方</span>
+          </button>
+          <button class="nav-button" type="button" data-view="questions">
+            <span class="nav-num">02</span><span>想定質問集</span>
+          </button>
+          <button class="nav-button" type="button" data-view="training">
+            <span class="nav-num">03</span><span>覚悟</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-box">
+          <strong>このサイトの方針</strong>
+          <p>模範回答は載せません。</p>
+          <p>「何を答えるか」より先に、「なぜ訊かれたか」を考えるための質問集です。</p>
+        </div>
+
+        <div class="sidebar-data-action">
+          <button class="btn primary sidebar-action-btn" id="randomSideButton" type="button">ランダムで1問引く</button>
+        </div>
+      </aside>
+
+      <div class="sidebar-scrim" id="sidebarScrim" aria-hidden="true"></div>
+
+      <main class="main" id="main">
+        <!-- HOME -->
+        <section class="view active" id="view-home" data-view-panel="home">
+          <div class="hero">
+            <div class="eyebrow">INTERVIEW QUESTION ARCHIVE</div>
+            <h1>
+              <span class="hero-title-main">面接想定質問集</span>
+              <span class="hero-title-level">問いの裏側を読む</span>
+            </h1>
+            <p class="hero-sub">あらゆる質問には、それを訊く意図がある。</p>
+            <p class="hero-copy">
+              面接は、用意した文章を暗唱する試験ではありません。<br>
+              質問の向こう側にいる相手が「何を知りたいのか」を考え、自分の経験と考えを使って答える対話です。
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn primary" type="button" data-go="questions">質問集を見る</button>
+              <button class="btn" type="button" data-go="guide">まず考え方を読む</button>
+              <button class="btn accent" id="randomHeroButton" type="button">ランダムで1問</button>
+            </div>
+
+            <p class="hero-note">答えを覚えるのではなく、問いの意図を読む力を育てる。</p>
+          </div>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <span class="section-kicker">CORE</span>
+              <h2>面接官が見ようとしている「未来」</h2>
+            </div>
+
+            <div class="concept-grid">
+              <article class="concept-card">
+                <span class="concept-label">RETENTION</span>
+                <h3>定着性</h3>
+                <p>その会社・学校を自分の意思で選び、現実とのズレや困難があっても向き合いながら続けていけそうか。</p>
+              </article>
+
+              <article class="concept-card accent-card">
+                <span class="concept-label">GROWTH</span>
+                <h3>活躍性</h3>
+                <p>入ったあとに学び、考え、修正し、行動し、周囲と関わりながら成長していけそうか。</p>
+              </article>
+            </div>
+
+            <div class="statement-box">
+              <p>面接で評価される要素は本来もっと多くあります。</p>
+              <p>このサイトでは、それらを理解しやすくするために、大きく「定着性」と「活躍性」の二つに整理しています。</p>
+            </div>
+          </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <span class="section-kicker">HOW TO USE</span>
+              <h2>このサイトの使い方</h2>
+            </div>
+
+            <div class="step-grid">
+              <article class="step-card"><span>01</span><strong>質問だけを見る</strong><p>まずは意図を開かず、自分なら何を見られているか考えます。</p></article>
+              <article class="step-card"><span>02</span><strong>自分の言葉で答える</strong><p>模範回答を探さず、自分の経験・考え・価値観から答えます。</p></article>
+              <article class="step-card"><span>03</span><strong>質問の意図を開く</strong><p>面接官が何を確認しようとしているのかを確認します。</p></article>
+              <article class="step-card"><span>04</span><strong>もう一度答える</strong><p>暗記ではなく、問いの本質を理解したうえで言葉を組み直します。</p></article>
+            </div>
+          </section>
+        </section>
+
+        <!-- GUIDE -->
+        <section class="view" id="view-guide" data-view-panel="guide">
+          <header class="page-header">
+            <div class="eyebrow">GUIDE / APPENDIX</div>
+            <h1>面接を始める前に<br>知っておいてほしいこと</h1>
+            <p>この質問集を「答えを覚えるための教材」にしないための、15の前提です。</p>
+          </header>
+
+          <div class="guide-list" id="guideList"></div>
+        </section>
+
+        <!-- QUESTIONS -->
+        <section class="view" id="view-questions" data-view-panel="questions">
+          <header class="page-header">
+            <div class="eyebrow">QUESTION ARCHIVE</div>
+            <h1>想定質問集</h1>
+            <p>質問を見たら、すぐに「答え」を探さないでください。まず、なぜその質問をされたのかを考えてみましょう。</p>
+          </header>
+
+          <section class="filter-panel" aria-label="質問の絞り込み">
+            <div class="filter-row">
+              <span class="filter-label">対象</span>
+              <div class="filter-buttons" id="categoryFilters">
+                <button class="filter-btn active" type="button" data-category="all">ALL</button>
+                <button class="filter-btn" type="button" data-category="common">共通</button>
+                <button class="filter-btn" type="button" data-category="employment">就職</button>
+                <button class="filter-btn" type="button" data-category="university">大学</button>
+                <button class="filter-btn training-filter" type="button" data-category="training">覚悟</button>
+              </div>
+            </div>
+
+            <div class="filter-row">
+              <label class="filter-label" for="searchInput">検索</label>
+              <input class="search-input" id="searchInput" type="search" placeholder="例：志望、失敗、大学、会社">
+            </div>
+
+            <div class="filter-row filter-meta">
+              <span class="filter-label">表示</span>
+              <strong id="resultCount">0問</strong>
+              <button class="text-button" id="resetFiltersButton" type="button">絞り込みを解除</button>
+            </div>
+          </section>
+
+          <div class="question-list" id="questionList"></div>
+        </section>
+
+        <!-- 覚悟 -->
+        <section class="view" id="view-training" data-view-panel="training">
+          <header class="page-header training-header">
+            <div class="eyebrow">COMMITMENT CHECK</div>
+            <h1>覚悟</h1>
+            <p>本番ではもっと柔らかな形に分解されて問われるかもしれません。ここでは、進路選択の本質をあえてむき出しにして確認します。</p>
+          </header>
+
+          <div class="warning-box">
+            <strong>これは「圧迫するため」の質問ではありません。</strong>
+            <p>進学や就職が、何かから逃げた結果ではなく、自分で選んだ結果になっているか。迷いや不安も含めて、自分自身の選択を説明できるかを確かめるための訓練です。</p>
+          </div>
+
+          <div class="question-list" id="trainingList"></div>
+        </section>
+      </main>
+    </div>
+  </div>
+
+  <dialog class="random-dialog" id="randomDialog" aria-labelledby="randomDialogTitle">
+    <form method="dialog" class="random-dialog-inner">
+      <div class="dialog-topline">
+        <span>RANDOM QUESTION</span>
+        <button class="dialog-close" value="close" aria-label="閉じる">×</button>
+      </div>
+      <div id="randomQuestionContent"></div>
+      <div class="dialog-actions">
+        <button class="btn accent" id="randomAgainButton" type="button">もう1問引く</button>
+        <button class="btn" value="close">閉じる</button>
+      </div>
+    </form>
+  </dialog>
+  <script src="script.js"></script>
+</body>
+</html>
