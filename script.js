@@ -107,7 +107,7 @@ function bindAuth() {
 bindAuth();
 
 /* ================================================================
-   面接想定質問集 Ver.0.7
+   面接想定質問集 Ver.0.8
    質問データ・画面切替・絞り込み・ランダム出題
    ================================================================ */
 
@@ -176,7 +176,7 @@ const guideItems = [
 ];
 
 // ===== 02. 面接想定質問データ =====
-// category: common / employment / university / training
+// category: common / employment / university / research / training
 // reality: 3=本番でそのままあり得る、2=深掘りとしてあり得る、1=訓練価値が高い
 const questions = [
   {
@@ -470,6 +470,125 @@ const questions = [
     intent: "自分を相手側の立場から見ることができるか。現在の自分に足りないものを理解しているか。そして、それを今後どう改善していこうとしているかを見ています。",
     realityNote: "頻出ではありませんが、自己理解と相手視点を同時に確認できる強い訓練質問です。"
   }
+,
+
+  {
+    id: 31,
+    category: "research",
+    question: "課題研究では、どのようなことに取り組みましたか？",
+    reality: 3,
+    retention: "○",
+    growth: "◎",
+    intent: "課題研究の内容を、単に作品名やテーマ名だけでなく、自分が理解した言葉で簡潔に説明できるかを見ています。専門的な内容でも、相手に合わせて要点を整理して伝えられるかという説明力も確認できます。",
+    drilldown: [
+      "30秒程度で説明するとしたら、どう説明しますか？",
+      "その分野を知らない人にも分かるように説明できますか？"
+    ]
+  },
+  {
+    id: 32,
+    category: "research",
+    question: "なぜそのテーマを選び、何を目的として取り組んだのですか？",
+    reality: 3,
+    retention: "○",
+    growth: "◎",
+    intent: "テーマを与えられたまま進めたのではなく、自分なりの興味や問題意識を持って取り組んだか。また、『何を作ったか』だけでなく『何を実現・解決しようとしたのか』という目的を理解しているかを見ています。",
+    drilldown: [
+      "そのテーマに興味を持ったきっかけは何ですか？",
+      "最初に立てた目標と、最後に目指していたものは同じでしたか？"
+    ]
+  },
+  {
+    id: 33,
+    category: "research",
+    question: "その課題研究で、あなた自身は何を担当し、どのように貢献しましたか？",
+    reality: 3,
+    retention: "○",
+    growth: "◎",
+    intent: "グループ全体の成果ではなく、本人が実際に担当したこと、考えたこと、行動したことを確認します。自分の役割を過大にも過小にもせず、他者の支援と自分の貢献を分けて説明できるかも見ています。",
+    drilldown: [
+      "その成果の中で、『自分がやった』と言い切れる部分はどこですか？",
+      "先生や仲間に助けてもらった部分と、自分で考えて決めた部分を分けて説明できますか？"
+    ]
+  },
+  {
+    id: 34,
+    category: "research",
+    question: "研究の中で、特に工夫したことは何ですか？　なぜその方法を選んだのですか？",
+    reality: 3,
+    retention: "○",
+    growth: "◎",
+    intent: "指示された作業をこなしただけではなく、自分で考え、比較し、判断した場面があったかを見ています。技術・材料・方法の名前そのものより、『なぜそれを選んだのか』という選択の根拠が重要です。",
+    drilldown: [
+      "他の方法は検討しましたか？",
+      "なぜ別の技術・材料・方法ではなく、それを選んだのですか？"
+    ]
+  },
+  {
+    id: 35,
+    category: "research",
+    question: "研究で一番苦労したことや、うまくいかなかったことは何ですか？　どう対応しましたか？",
+    reality: 3,
+    retention: "◎",
+    growth: "◎",
+    intent: "困難や失敗の大きさではなく、問題が起きたときにどう考え、どう動き、どのように修正した人なのかを見ています。原因分析、相談、試行錯誤、やり直しなど、困難への向き合い方が表れやすい質問です。",
+    drilldown: [
+      "うまくいかなかった原因を、どう考えましたか？",
+      "最初に試した対応と、最終的に取った対応は同じでしたか？"
+    ]
+  },
+  {
+    id: 36,
+    category: "research",
+    question: "チームで取り組んだ場合、あなたはどんな役割を果たしましたか？",
+    reality: 2,
+    retention: "◎",
+    growth: "◎",
+    intent: "チームの中で、自分の役割を理解して行動できたかを見ています。リーダーだったかどうかではなく、他者と関わりながら成果へどう貢献したか、意見の違いや役割分担にどう向き合ったかが重要です。",
+    drilldown: [
+      "意見が合わなかった場面はありましたか？　そのときどうしましたか？",
+      "あなたがそのチームにいなくても、同じ結果になったと思いますか？"
+    ]
+  },
+  {
+    id: 37,
+    category: "research",
+    question: "この課題研究は成功だったと思いますか？　その根拠は何ですか？",
+    reality: 2,
+    retention: "○",
+    growth: "◎",
+    intent: "『完成したから成功』ではなく、自分たちが設定した目的や成果を基準に、研究を客観的に評価できるかを見ています。結果、測定値、利用者の反応、目標達成度など、判断の根拠まで説明できると強い質問です。",
+    drilldown: [
+      "100点満点で評価すると何点ですか？",
+      "残りの点数は、何が足りなかったからですか？"
+    ]
+  },
+  {
+    id: 38,
+    category: "research",
+    question: "もう一度取り組めるなら、何を改善しますか？",
+    reality: 2,
+    retention: "○",
+    growth: "◎",
+    intent: "成果を出して終わりではなく、振り返りから次の改善点を見つけられるかを確認します。自分たちの研究に残っている課題を認識し、次の一手を考えられる人かを見る質問です。",
+    drilldown: [
+      "現在も解決できていない課題はありますか？",
+      "時間や予算がもっとあれば、次に何へ取り組みますか？"
+    ]
+  },
+  {
+    id: 39,
+    category: "research",
+    question: "課題研究で得たことを、進学先・就職先でどう生かしたいですか？",
+    reality: 3,
+    retention: "◎",
+    growth: "◎",
+    intent: "課題研究を高校生活の中だけで終わった経験にせず、そこで得た考え方・技術・協働経験・失敗からの学びを、これからの進路へ接続できるかを見ています。過去の経験から未来の成長可能性を伝える質問です。",
+    drilldown: [
+      "課題研究で身についた力を一つ挙げるなら何ですか？",
+      "その力が、進学先・就職先のどんな場面で役立つと思いますか？"
+    ]
+  }
 ];
 
 // ===== 03. DOM取得 =====
@@ -507,6 +626,7 @@ function categoryLabel(category) {
     common: "共通",
     employment: "就職",
     university: "大学",
+    research: "課題研究",
     training: "覚悟"
   };
   return labels[category] ?? category;
@@ -560,6 +680,14 @@ function createQuestionCard(question) {
       <h3>この質問から、何を見たいのか</h3>
       <p>${question.intent}</p>
       ${question.realityNote ? `<p class="reality-note"><strong>本番との距離：</strong>${question.realityNote}</p>` : ""}
+      ${question.drilldown?.length ? `
+        <div class="drilldown-box">
+          <h3>さらに深掘りするなら</h3>
+          <ul>
+            ${question.drilldown.map((item) => `<li>${item}</li>`).join("")}
+          </ul>
+        </div>
+      ` : ""}
     </div>
   `;
 
@@ -600,7 +728,7 @@ function renderQuestions() {
 
   const filtered = questions.filter((question) => {
     const categoryMatch = currentCategory === "all" || question.category === currentCategory;
-    const searchable = `${question.question} ${question.intent} ${question.target ?? ""}`.toLowerCase();
+    const searchable = `${question.question} ${question.intent} ${(question.drilldown ?? []).join(" ")} ${question.target ?? ""}`.toLowerCase();
     const searchMatch = !keyword || searchable.includes(keyword);
     return categoryMatch && searchMatch;
   });

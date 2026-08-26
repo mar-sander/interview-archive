@@ -1,5 +1,5 @@
 /* ================================================================
-   面接想定質問集 Ver.0.7
+   面接想定質問集 Ver.0.8
    暖色ダークモード・角丸なしUIを基調にしたスタイル
    ================================================================ */
 
@@ -744,6 +744,10 @@ h1 {
 }
 
 .intent-toggle {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
   width: 100%;
   padding: 12px 18px;
   text-align: left;
@@ -753,15 +757,20 @@ h1 {
   border-top: 1px solid var(--line);
 }
 
+/* 開閉状態は「追加／削除」に見えやすい＋／−ではなく、上下のシェブロンで示す */
 .intent-toggle::after {
-  float: right;
-  content: "+";
-  font-size: 1.2rem;
-  font-weight: 700;
+  flex: 0 0 auto;
+  width: .58rem;
+  height: .58rem;
+  content: "";
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .16s ease;
 }
 
 .intent-toggle[aria-expanded="true"]::after {
-  content: "−";
+  transform: rotate(225deg);
 }
 
 .intent-body {
@@ -775,9 +784,11 @@ h1 {
   display: block;
 }
 
+
 .intent-body h3 {
-  margin: 0 0 .5rem;
-  font-size: 1rem;
+    margin: 0 0 .5rem;
+    font-size: 1rem;
+    color: #c9beb1;
 }
 
 .intent-body p {
@@ -790,6 +801,31 @@ h1 {
   color: var(--muted);
   font-size: .82rem;
   border-top: 1px dashed var(--line);
+}
+
+.drilldown-box {
+  margin-top: 16px;
+  padding-top: 14px;
+  border-top: 1px dashed var(--line);
+}
+
+.drilldown-box h3 {
+  margin: 0 0 8px;
+  color: var(--muted);
+  font-size: .92rem;
+  font-family: "Zen Kaku Gothic New", "Noto Sans JP", sans-serif;
+  font-weight: 700;
+}
+
+.drilldown-box ul {
+  margin: 0;
+  padding-left: 1.25rem;
+}
+
+.drilldown-box li {
+  margin: .35rem 0;
+  color: var(--ink);
+  line-height: 1.75;
 }
 
 .empty-state {
@@ -873,6 +909,22 @@ h1 {
   flex-wrap: wrap;
   gap: 10px;
   padding: 0 24px 24px;
+}
+
+/* ===== フッター ===== */
+.site-footer {
+  padding: 20px clamp(16px, 3vw, 44px);
+  color: var(--muted);
+  font-size: .75rem;
+  line-height: 1.6;
+  letter-spacing: .04em;
+  text-align: center;
+  background: rgba(46, 47, 49, .72);
+  border-top: 1px solid var(--line-soft);
+}
+
+.site-footer p {
+  margin: 0;
 }
 
 /* ===== 15. レスポンシブ ===== */
