@@ -1,1 +1,178 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#3B3D40">
+  <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
+  <meta name="description" content="模擬面接で質問を切り、回答を観察し、感想戦へつなぐための実戦面接デッキです。">
 
+  <link rel="icon" href="favicon.ico" sizes="any">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Zen+Kaku+Gothic+New:wght@400;500;700&family=Zen+Old+Mincho:wght@500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+  <title>実戦面接デッキ｜INTERVIEW PRACTICE DECK</title>
+</head>
+<body class="auth-locked">
+
+  <!-- ===== 入室パスワード認証 ===== -->
+  <div class="auth-gate" id="authGate" role="dialog" aria-modal="true" aria-labelledby="authTitle">
+    <form class="auth-box" id="authForm" novalidate>
+      <p class="auth-kicker">INTERVIEW PRACTICE DECK</p>
+      <h1 id="authTitle">PRIVATE DECK</h1>
+      <p class="auth-copy">このデッキを使用するには、パスワードを入力してください。</p>
+
+      <div class="auth-field">
+        <label for="authPassword">パスワード</label>
+        <input
+          id="authPassword"
+          class="auth-password"
+          type="text"
+          inputmode="text"
+          lang="ja"
+          autocomplete="off"
+          autocapitalize="none"
+          spellcheck="false"
+          enterkeyhint="go"
+          aria-describedby="authImeNote authError"
+        >
+        <p class="auth-ime-note" id="authImeNote">日本語入力に対応しています。</p>
+      </div>
+
+      <p class="auth-error" id="authError" aria-live="polite"></p>
+      <button class="btn accent auth-submit" type="submit">DECKを開く</button>
+      <p class="auth-note">一度認証すると、この端末の同じブラウザーでは次回から自動で入室します。</p>
+    </form>
+  </div>
+
+  <a class="skip-link" href="#main">本文へ移動</a>
+
+  <div class="app">
+    <header class="topbar">
+      <button class="menu-btn" id="menuButton" type="button" aria-label="メニューを開く" aria-controls="sidebar" aria-expanded="false">☰</button>
+
+      <div class="brand-mini">
+        <span class="brand-mark" aria-hidden="true"></span>
+        <span>INTERVIEW PRACTICE DECK</span>
+      </div>
+
+      <div class="top-status" id="topStatus">PRIVATE OPERATOR TOOL</div>
+
+      <button class="btn accent compact" id="randomTopButton" type="button">ランダム1枚</button>
+    </header>
+
+    <div class="layout">
+      <aside class="sidebar" id="sidebar" aria-label="デッキメニュー">
+        <p class="sidebar-title">DECK SELECT</p>
+
+        <nav class="nav" aria-label="メインナビゲーション">
+          <button class="nav-button active" type="button" data-view="home">
+            <span class="nav-num">00</span><span>HOME</span>
+          </button>
+          <button class="nav-button" type="button" data-view="employment">
+            <span class="nav-num">10</span><span>就職デッキ</span>
+          </button>
+          <button class="nav-button" type="button" data-view="university">
+            <span class="nav-num">10</span><span>進学デッキ</span>
+          </button>
+        </nav>
+
+        <div class="sidebar-box">
+          <strong>このデッキの役割</strong>
+          <p>質問を投げる。</p>
+          <p>回答を観察する。</p>
+          <p>必要なら追撃する。</p>
+          <p>最後に感想戦で返す。</p>
+        </div>
+
+        <div class="sidebar-data-action">
+          <button class="btn primary sidebar-action-btn" id="randomSideButton" type="button">ランダムで1枚引く</button>
+        </div>
+      </aside>
+
+      <div class="sidebar-scrim" id="sidebarScrim" aria-hidden="true"></div>
+
+      <main class="main" id="main">
+        <!-- HOME -->
+        <section class="view active" id="view-home" data-view-panel="home">
+          <div class="hero">
+            <div class="eyebrow">INTERVIEW PRACTICE DECK</div>
+            <h1>
+              <span class="hero-title-main">実戦面接デッキ</span>
+              <span class="hero-title-level">問いを切り、回答を読み、感想戦へつなぐ</span>
+            </h1>
+            <p class="hero-sub">QUESTION → OBSERVE → DEEP DIVE → REVIEW</p>
+            <p class="hero-copy">
+              模擬面接中は、まず質問だけを見る。<br>
+              生徒の回答に応じて追撃カードを切り、終了後の感想戦では質問の意図・良い兆候・気になる兆候・回答のヒントを確認する。
+            </p>
+
+            <div class="hero-actions">
+              <button class="btn primary" type="button" data-go="employment">就職デッキ 10枚</button>
+              <button class="btn primary" type="button" data-go="university">進学デッキ 10枚</button>
+              <button class="btn accent" id="randomHeroButton" type="button">ランダムで1枚</button>
+            </div>
+
+            <p class="hero-note">これは模範回答集ではなく、面接官側が「何を見るか」を忘れないためのデッキ。</p>
+          </div>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <span class="section-kicker">CARD ANATOMY</span>
+              <h2>1枚のカードに入っているもの</h2>
+            </div>
+
+            <div class="info-grid">
+              <article class="info-card"><span>INTENT</span><strong>質問の本質</strong><p>表面的な質問の向こう側で、何を確認しようとしているか。</p></article>
+              <article class="info-card"><span>LOOK FOR</span><strong>観察ポイント</strong><p>回答内容や考え方から、何を拾いたいか。</p></article>
+              <article class="info-card"><span>DEEP DIVE</span><strong>追撃カード</strong><p>回答に応じて、一段深く潜るための問い。</p></article>
+              <article class="info-card"><span>REVIEW</span><strong>感想戦</strong><p>模擬面接後、生徒へ何を返すと学びになるか。</p></article>
+            </div>
+          </section>
+        </section>
+
+        <!-- 就職 -->
+        <section class="view" id="view-employment" data-view-panel="employment">
+          <header class="page-header">
+            <div class="eyebrow">EMPLOYMENT DECK / 10 CARDS</div>
+            <h1>就職デッキ</h1>
+            <p>志望・企業理解・実践経験・困難・対人関係・ミスマッチ耐性・未来・覚悟までを10枚で見る基本デッキ。</p>
+          </header>
+          <div class="deck-list" id="employmentDeck"></div>
+        </section>
+
+        <!-- 進学 -->
+        <section class="view" id="view-university" data-view-panel="university">
+          <header class="page-header">
+            <div class="eyebrow">UNIVERSITY DECK / 10 CARDS</div>
+            <h1>進学デッキ</h1>
+            <p>志望・学問への原点・進学理由・入学後・主体的な学び・困難・計画変更・未来・覚悟までを10枚で見る基本デッキ。</p>
+          </header>
+          <div class="deck-list" id="universityDeck"></div>
+        </section>
+      </main>
+    </div>
+
+    <footer class="site-footer">
+      <p>Copyright © No.M All Rights Reserved.</p>
+    </footer>
+  </div>
+
+  <dialog class="random-dialog" id="randomDialog" aria-labelledby="randomDialogTitle">
+    <form method="dialog" class="random-dialog-inner">
+      <div class="dialog-topline">
+        <span>RANDOM CARD</span>
+        <button class="dialog-close" value="close" aria-label="閉じる">×</button>
+      </div>
+      <div id="randomCardContent"></div>
+      <div class="dialog-actions">
+        <button class="btn accent" id="randomAgainButton" type="button">もう1枚引く</button>
+        <button class="btn" value="close">閉じる</button>
+      </div>
+    </form>
+  </dialog>
+
+  <script src="script.js"></script>
+</body>
+</html>
