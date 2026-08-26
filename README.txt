@@ -17,3 +17,5 @@ Ver.0.8: 「課題研究」分類を追加。Q.31〜Q.39の9問と、各問の�
 追加修正:
 - フッターに Copyright © M.M. All Rights Reserved. を追加
 - 質問意図の開閉表示を ＋／− から angle-down／angle-up 型のシェブロンへ変更
+
+- favicon.ico：サイト用favicon
