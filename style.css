@@ -970,7 +970,18 @@ h1 {
     left: 0;
     z-index: 70;
     width: min(310px, 86vw);
+
+    /* 100vh はスマホブラウザーのUI込みで計算される場合があるため、
+       実際に見えている高さへ追従する 100dvh を優先する。 */
     height: calc(100vh - 59px);
+    height: calc(100dvh - 59px);
+
+    /* 最下部の操作ボタンが端末のナビゲーション領域に隠れないよう、
+       スクロール終端にスマホ用の退避余白を確保する。 */
+    padding-bottom: max(64px, calc(36px + env(safe-area-inset-bottom)));
+    overscroll-behavior-y: contain;
+    -webkit-overflow-scrolling: touch;
+
     margin-top: 0;
     transform: translateX(-110%);
     transition: transform .2s ease;
