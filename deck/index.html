@@ -5,7 +5,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <meta name="theme-color" content="#3B3D40">
   <meta name="robots" content="noindex, nofollow, noarchive, nosnippet">
-  <meta name="description" content="模擬面接で質問を切り、回答を観察し、感想戦へつなぐための実戦面接デッキです。">
+  <meta name="description" content="模擬面接で質問を切り、回答を観察し、感想戦で問いの意図を返すためのNo.M専用・実戦面接デッキです。">
 
   <link rel="icon" href="favicon.ico" sizes="any">
   <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -70,6 +70,12 @@
           <button class="nav-button active" type="button" data-view="home">
             <span class="nav-num">00</span><span>HOME</span>
           </button>
+          <button class="nav-button" type="button" data-view="review">
+            <span class="nav-num">01</span><span>REVIEW TALK</span>
+          </button>
+          <button class="nav-button" type="button" data-view="qa">
+            <span class="nav-num">02</span><span>Q&amp;A</span>
+          </button>
           <button class="nav-button" type="button" data-view="employment">
             <span class="nav-num">10</span><span>就職デッキ</span>
           </button>
@@ -83,7 +89,8 @@
           <p>質問を投げる。</p>
           <p>回答を観察する。</p>
           <p>必要なら追撃する。</p>
-          <p>最後に感想戦で返す。</p>
+          <p>感想戦で「問いの意図」を返す。</p>
+          <p>生徒の疑問をQ&amp;Aへ蓄積する。</p>
         </div>
 
         <div class="sidebar-data-action">
@@ -102,19 +109,21 @@
               <span class="hero-title-main">実戦面接デッキ</span>
               <span class="hero-title-level">問いを切り、回答を読み、感想戦へつなぐ</span>
             </h1>
-            <p class="hero-sub">QUESTION → OBSERVE → DEEP DIVE → REVIEW</p>
+            <p class="hero-sub">QUESTION → OBSERVE → DEEP DIVE → REVIEW → TALK</p>
             <p class="hero-copy">
-              模擬面接中は、まず質問だけを見る。<br>
-              生徒の回答に応じて追撃カードを切り、終了後の感想戦では質問の意図・良い兆候・気になる兆候・回答のヒントを確認する。
+              模擬面接中は、まず質問を切る。<br>
+              回答を観察し、必要なら追撃する。終了後は「なぜその質問をされたのか」を生徒と考え、問いの裏側にある定着性・活躍性へつなげる。
             </p>
 
             <div class="hero-actions">
+              <button class="btn accent" type="button" data-go="review">感想戦TALK</button>
+              <button class="btn" type="button" data-go="qa">生徒からのQ&amp;A</button>
               <button class="btn primary" type="button" data-go="employment">就職デッキ 10枚</button>
               <button class="btn primary" type="button" data-go="university">進学デッキ 10枚</button>
-              <button class="btn accent" id="randomHeroButton" type="button">ランダムで1枚</button>
+              <button class="btn" id="randomHeroButton" type="button">ランダムで1枚</button>
             </div>
 
-            <p class="hero-note">これは模範回答集ではなく、面接官側が「何を見るか」を忘れないためのデッキ。</p>
+            <p class="hero-note">質問する・観察する・問い返す・感想戦で返す。使うほど育っていく、No.M専用の面接運用デッキ。</p>
           </div>
 
           <section class="section-block">
@@ -130,6 +139,300 @@
               <article class="info-card"><span>REVIEW</span><strong>感想戦</strong><p>模擬面接後、生徒へ何を返すと学びになるか。</p></article>
             </div>
           </section>
+
+          <section class="section-block">
+            <div class="section-heading">
+              <span class="section-kicker">AFTER INTERVIEW</span>
+              <h2>面接後に返すための2つの手札</h2>
+            </div>
+
+            <div class="after-grid">
+              <article class="after-card">
+                <span>REVIEW TALK</span>
+                <h3>必ず伝える親記事</h3>
+                <p>「すべての質問に共通する2つの意図は何だと思う？」から始め、定着性・活躍性、可能性と信用、素直さ、自分の言葉までつなぐ。</p>
+                <button class="btn accent" type="button" data-go="review">TALKを開く</button>
+              </article>
+
+              <article class="after-card">
+                <span>Q&amp;A</span>
+                <h3>生徒の疑問に備える</h3>
+                <p>TALKを聞いた生徒が疑問に思いそうなことを先回りして整理。実際の感想戦で出た良い質問を追加し、このデッキと一緒に育てていく。</p>
+                <button class="btn" type="button" data-go="qa">Q&amp;Aを開く</button>
+              </article>
+            </div>
+          </section>
+        </section>
+
+        <!-- REVIEW TALK -->
+        <section class="view" id="view-review" data-view-panel="review">
+          <header class="page-header review-header">
+            <div class="eyebrow">REVIEW TALK / AFTER INTERVIEW</div>
+            <h1>面接官は、結局なにを知りたいのか</h1>
+            <p>模擬面接が終わった直後、生徒へ問いを与えながら進める感想戦用TALK。答えを先に教えず、生徒自身に一度考えてもらってから説明へ進む。</p>
+          </header>
+
+          <div class="talk-guide">
+            <span class="review-label">HOW TO USE</span>
+            <strong>問いを投げる → 生徒の答えを待つ → 「説明を開く」</strong>
+            <p>このページは生徒に見せながら使ってもよい。ASKのところでは一度スクロールを止め、生徒の言葉を待つ。</p>
+          </div>
+
+          <div class="talk-flow">
+            <article class="talk-card ask-card">
+              <div class="talk-kicker">ASK 01</div>
+              <h2>今日された、あらゆる質問の裏側に共通している「二つの意図」って、何だと思う？</h2>
+              <p>
+                今日、いろんな質問をされたよね。<br>
+                志望動機、高校生活、長所や短所、失敗した経験、課題研究、将来のこと。
+              </p>
+              <p>
+                質問の内容は全部違います。<br>
+                でも、すべての質問の裏側には、その質問をした面接官の「意図」があります。
+              </p>
+              <p class="talk-emphasis">
+                つまり、「この質問を通して、あなたの何を知りたいのか？」ということです。
+              </p>
+              <p>
+                私は、面接でされるさまざまな質問の裏側にある意図は、突き詰めると二つに集約できると考えています。
+              </p>
+
+              <details class="talk-reveal">
+                <summary>生徒が答えたら、説明を開く</summary>
+                <div class="talk-reveal-body">
+                  <p class="talk-answer">答えは、<strong>「定着性」</strong>と<strong>「活躍性」</strong>です。</p>
+                </div>
+              </details>
+            </article>
+
+            <article class="talk-card">
+              <div class="talk-kicker">RETENTION</div>
+              <h2>定着性とは？</h2>
+              <p class="talk-emphasis">「この人は、ここに入ったあとも続けてくれそうか？」</p>
+              <p>
+                会社は、新しく入った人を育てるために、お金も時間も人も使います。
+                仕事を教える。研修をする。先輩が時間を使う。経験を積ませる。
+              </p>
+              <p>
+                大学だって似ています。先生が教え、設備を使い、研究や活動の機会を用意する。
+              </p>
+              <p>
+                だから採る側・迎え入れる側としては、
+                <strong>「この人に時間や労力を使っても、すぐにいなくならないだろうか？」</strong>
+                <strong>「本当にここを選んでいるのだろうか？」</strong>
+                を知りたい。
+              </p>
+              <p>
+                ただし、定着性は「絶対に辞めません！」と言えばいい、という話ではありません。
+              </p>
+              <p>
+                思っていたことと違ったとき。希望どおりにならなかったとき。
+                人間関係や勉強、仕事で困ったとき。
+                そんなときにも、考える、相談する、工夫する、向き合う。
+              </p>
+              <p><strong>そういうことができそうな人なのか。</strong>そこまで含めて見られています。</p>
+            </article>
+
+            <article class="talk-card">
+              <div class="talk-kicker">GROWTH</div>
+              <h2>活躍性とは？</h2>
+              <p class="talk-emphasis">「この人は、ここに入ったあとに成長してくれそうか？」</p>
+              <p>
+                高校生の時点で、完成された社員や大学生である必要なんてありません。今できないことがあって当然です。
+              </p>
+              <p>
+                だから大事なのは、<strong>今どれだけ完成しているかではなく、これからどう伸びていきそうか。</strong>
+              </p>
+              <p>
+                分からないことを学べるか。失敗したときに修正できるか。
+                周囲の人と協力できるか。自分から考えて動けるか。経験から何かを学べるか。
+              </p>
+              <p>
+                そういう受け答えや過去の経験から、
+                <strong>「この人は入ったあと伸びそうだな」</strong>
+                <strong>「将来、力を発揮してくれそうだな」</strong>
+                と思ってもらえるか。
+              </p>
+              <p>これが活躍性です。</p>
+            </article>
+
+            <article class="talk-card ask-card">
+              <div class="talk-kicker">ASK 02</div>
+              <h2>だったら、直接聞けばよくない？</h2>
+              <p class="talk-question-pair">
+                「あなたは、うちに定着してくれますか？」<br>
+                「あなたは、入ったあと活躍してくれますか？」
+              </p>
+              <p>
+                こうやって直接聞けば早いよね。<br>
+                なのに、なぜ面接官は「志望理由は？」「失敗した経験は？」「長所は？」「課題研究では何をした？」と、
+                いろんな質問を遠回しにしてくるんだと思う？
+              </p>
+
+              <details class="talk-reveal">
+                <summary>生徒が答えたら、説明を開く</summary>
+                <div class="talk-reveal-body">
+                  <p class="talk-answer">直接聞いたって、ほとんどの人が<strong>「はい」</strong>と答えるからです。</p>
+                  <p>
+                    「私はすぐ辞めると思います」「たぶん成長しません」なんて答える人は、まずいないよね。
+                  </p>
+                  <p>
+                    つまり、本人が<strong>「私は大丈夫です」</strong>と言っただけでは、信用できる材料として弱い。
+                  </p>
+                  <p>
+                    だから面接官はいろいろな角度から質問します。
+                    過去に何をしてきたのか。失敗したときどうしたのか。何を大切にしているのか。
+                    なぜここを選んだのか。人とどう関わってきたのか。これからどうなりたいのか。
+                  </p>
+                  <p>
+                    そして回答を重ねながら、
+                    <strong>「この人の話は本当に信用できそうか？」</strong>
+                    <strong>「ここで続けてくれそうか？」</strong>
+                    <strong>「これから伸びてくれそうか？」</strong>
+                    を確かめているわけです。
+                  </p>
+                </div>
+              </details>
+            </article>
+
+            <article class="talk-card key-card">
+              <div class="talk-kicker">KEY MESSAGE</div>
+              <h2>だから、面接で本当に大事なのは何か</h2>
+
+              <div class="key-message-grid">
+                <div>
+                  <span>POSSIBILITY</span>
+                  <strong>あなたの「可能性」を感じてもらうこと。</strong>
+                </div>
+                <div>
+                  <span>TRUST</span>
+                  <strong>あなたを「信用」してもらうこと。</strong>
+                </div>
+              </div>
+
+              <p>
+                今の自分を必要以上に立派に見せることではありません。
+                「この人なら、これから成長しそうだ」と思ってもらう。
+                そして「この人が話していることなら、信じてもよさそうだ」と思ってもらう。
+              </p>
+
+              <p class="talk-emphasis">では、そのために、こっち側ができることは何か。</p>
+
+              <div class="key-message-grid">
+                <div>
+                  <span>HONESTY</span>
+                  <strong>素直であること。</strong>
+                </div>
+                <div>
+                  <span>OWN WORDS</span>
+                  <strong>熱意を、自分の言葉で伝えること。</strong>
+                </div>
+              </div>
+            </article>
+
+            <article class="talk-card">
+              <div class="talk-kicker">HONESTY</div>
+              <h2>「素直であること」</h2>
+              <p>
+                分からないのに、分かったふりをしない。失敗したことを、なかったことにしない。
+                自分の弱いところも認める。助けてもらったことも認める。
+              </p>
+              <p>
+                でも、「だから仕方ありませんでした」で終わらず、
+                <strong>そこから何を考えて、どうしようとしているのかまで話す。</strong>
+              </p>
+              <p>
+                素直というのは、何でも相手の言うことを聞くという意味ではありません。
+              </p>
+              <p class="talk-emphasis">自分にも、相手にも、誠実であること。</p>
+              <p>私はそう考えています。</p>
+            </article>
+
+            <article class="talk-card">
+              <div class="talk-kicker">OWN WORDS</div>
+              <h2>「熱意を、自分の言葉で伝えること」</h2>
+              <p>
+                立派な文章じゃなくていいです。少しくらい言葉に詰まってもいい。
+              </p>
+              <p>
+                ネットで調べた綺麗な志望動機を暗記して話すより、
+                <strong>「自分はこういう経験をした」「だから、こう思うようになった」「だから、ここでこれをやりたい」</strong>
+                と、自分の中にあるものを自分の言葉で話した方が、ずっと伝わります。
+              </p>
+              <p>
+                なぜなら、<strong>その言葉には、その人自身しか持っていない経験が乗るからです。</strong>
+              </p>
+              <p>それが熱意になって、それが信用にもつながります。</p>
+            </article>
+
+            <article class="talk-card finish-card">
+              <div class="talk-kicker">REVIEW</div>
+              <h2>じゃあ、今日の面接をもう一度振り返ってみよう</h2>
+              <p>
+                ここから大切なのは、<strong>「あの質問には、この回答をすればよかった」</strong>だけで終わらせないことです。
+              </p>
+
+              <div class="review-questions">
+                <p>なんで、あの質問をされたんだろう？</p>
+                <p>定着性の何を確認しようとしていた？</p>
+                <p>活躍性の何を確認しようとしていた？</p>
+                <p>自分の回答から、それは相手に伝わっただろうか？</p>
+              </div>
+
+              <p>
+                ここまで考えると、面接で聞かれる質問を全部暗記しなくてもよくなります。
+                知らない質問が飛んできても、<strong>「この質問で、相手は自分の何を知りたいんだ？」</strong>と考えられるからです。
+              </p>
+              <p>
+                それができれば、自分の中にある経験や考えを使って、その場で自分の言葉を組み立てられる。
+              </p>
+              <p class="talk-emphasis">
+                私は、それが面接で求められる本当の意味での「コミュニケーション能力」だと思っています。
+              </p>
+            </article>
+          </div>
+        </section>
+
+        <!-- Q&A -->
+        <section class="view" id="view-qa" data-view-panel="qa">
+          <header class="page-header qa-header">
+            <div class="eyebrow">QUESTIONS FROM STUDENTS</div>
+            <h1>生徒からのQ&amp;A</h1>
+            <p>REVIEW TALKを聞いた生徒が疑問に思いそうなことを、あらかじめ整理しておく場所。実際の感想戦で出た良い問いは、あとからここへ追加してデッキを育てる。</p>
+          </header>
+
+          <section class="qa-filter-panel" aria-label="Q&Aの絞り込み">
+            <div class="qa-filter-row">
+              <span class="qa-filter-label">分類</span>
+              <div class="qa-filter-buttons" id="qaCategoryFilters">
+                <button class="filter-btn active" type="button" data-qa-filter="all">ALL</button>
+                <button class="filter-btn" type="button" data-qa-filter="core">定着性・活躍性</button>
+                <button class="filter-btn" type="button" data-qa-filter="honesty">素直さ</button>
+                <button class="filter-btn" type="button" data-qa-filter="words">自分の言葉・熱意</button>
+                <button class="filter-btn" type="button" data-qa-filter="deep">深掘り</button>
+                <button class="filter-btn" type="button" data-qa-filter="answer">正解・模範回答</button>
+              </div>
+            </div>
+
+            <div class="qa-filter-row">
+              <label class="qa-filter-label" for="qaSearchInput">検索</label>
+              <input class="qa-search-input" id="qaSearchInput" type="search" placeholder="例：素直、短所、AI、深掘り">
+            </div>
+
+            <div class="qa-filter-row qa-filter-meta">
+              <span class="qa-filter-label">表示</span>
+              <strong id="qaResultCount">0件</strong>
+              <button class="text-button" id="qaResetButton" type="button">絞り込みを解除</button>
+            </div>
+          </section>
+
+          <div class="qa-list" id="qaList"></div>
+
+          <div class="grow-note">
+            <span class="review-label">GROWING DECK</span>
+            <strong>実際に生徒から出た「いい質問」を、ここへ追加していく。</strong>
+            <p>このQ&amp;Aは完成させて終わる記事ではない。模擬面接を重ねるほど、生徒の疑問とNo.Mの回答が蓄積され、デッキと一緒に育っていく。</p>
+          </div>
         </section>
 
         <!-- 就職 -->
