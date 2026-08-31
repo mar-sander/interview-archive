@@ -340,7 +340,7 @@ h1 { margin: .5em 0 .22em; letter-spacing: -.04em; }
   background: rgba(230, 221, 210, .08);
 }
 
-.talk-guide strong {
+.talk-guide > strong {
   display: block;
   margin: .35rem 0;
   font-family: var(--font-heading);
@@ -350,6 +350,17 @@ h1 { margin: .5em 0 .22em; letter-spacing: -.04em; }
 .talk-guide p {
   margin: .35rem 0 0;
   color: var(--muted);
+}
+
+.review-header + .talk-guide p {
+  color: var(--accent);
+  overflow-wrap: normal;
+  line-break: strict;
+  word-break: normal;
+}
+
+.review-header + .talk-guide p strong {
+  color: var(--ink);
 }
 
 .talk-flow {
