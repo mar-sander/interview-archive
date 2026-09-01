@@ -22,31 +22,32 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
+          import re
 
           path = Path("last-check.css")
           text = path.read_text(encoding="utf-8")
 
-          old = '''.last-check-basic-list li {
-            position: relative;
-            padding: 11px 12px 11px 34px;
-            line-height: 1.7;
-            background: rgba(230, 221, 210, .045);
-            border-bottom: 1px solid var(--line-soft);
-          }
+          desktop_pattern = re.compile(
+              r'\.last-check-basic-list li \{\n'
+              r'  position: relative;\n'
+              r'  padding: 11px 12px 11px 34px;\n'
+              r'  line-height: 1\.7;\n'
+              r'  background: rgba\(230, 221, 210, \.045\);\n'
+              r'  border-bottom: 1px solid var\(--line-soft\);\n'
+              r'\}\n\n'
+              r'\.last-check-basic-list li::before \{\n'
+              r'  position: absolute;\n'
+              r'  top: 1\.05em;\n'
+              r'  left: 12px;\n'
+              r'  width: 8px;\n'
+              r'  height: 8px;\n'
+              r'  content: "";\n'
+              r'  background: var\(--accent\);\n'
+              r'  transform: rotate\(45deg\);\n'
+              r'\}'
+          )
 
-          .last-check-basic-list li::before {
-            position: absolute;
-            top: 1.05em;
-            left: 12px;
-            width: 8px;
-            height: 8px;
-            content: "";
-            background: var(--accent);
-            transform: rotate(45deg);
-          }
-          '''
-
-          new = '''.last-check-basic-list li {
+          desktop_replacement = '''.last-check-basic-list li {
             display: grid;
             grid-template-columns: 8px minmax(0, 1fr);
             align-items: center;
@@ -63,28 +64,28 @@ jobs:
             content: "";
             background: var(--accent);
             transform: rotate(45deg);
-          }
-          '''
+          }'''
 
-          old_mobile = '''  .last-check-basic-list li {
-            padding: 10px 8px 10px 29px;
-          }
+          text, desktop_count = desktop_pattern.subn(desktop_replacement, text, count=1)
+          assert desktop_count == 1, "desktop marker block must exist exactly once"
 
-          .last-check-basic-list li::before {
-            left: 9px;
-          }
-          '''
+          mobile_pattern = re.compile(
+              r'  \.last-check-basic-list li \{\n'
+              r'    padding: 10px 8px 10px 29px;\n'
+              r'  \}\n\n'
+              r'  \.last-check-basic-list li::before \{\n'
+              r'    left: 9px;\n'
+              r'  \}'
+          )
 
-          new_mobile = '''  .last-check-basic-list li {
+          mobile_replacement = '''  .last-check-basic-list li {
             column-gap: 12px;
             padding: 10px 8px;
-          }
-          '''
+          }'''
 
-          assert text.count(old) == 1, "desktop marker block must exist exactly once"
-          assert text.count(old_mobile) == 1, "mobile marker block must exist exactly once"
+          text, mobile_count = mobile_pattern.subn(mobile_replacement, text, count=1)
+          assert mobile_count == 1, "mobile marker block must exist exactly once"
 
-          text = text.replace(old, new).replace(old_mobile, new_mobile)
           path.write_text(text, encoding="utf-8")
 
       - name: Validate
@@ -93,6 +94,7 @@ jobs:
           grep -q 'grid-template-columns: 8px minmax(0, 1fr);' last-check.css
           grep -q 'align-items: center;' last-check.css
           ! grep -q 'top: 1.05em;' last-check.css
+          ! grep -q 'left: 9px;' last-check.css
           git diff --check
 
       - name: Commit
