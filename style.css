@@ -1334,15 +1334,17 @@ body.auth-locked > .auth-gate {
 .archive-disclosure summary::after {
   position: absolute;
   top: 50%;
-  right: 20px;
-  content: "＋";
-  font-size: 1.2rem;
-  line-height: 1;
-  transform: translateY(-50%);
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: translateY(-65%) rotate(45deg);
 }
 
 .archive-disclosure[open] summary::after {
-  content: "−";
+  transform: translateY(-35%) rotate(-135deg);
 }
 
 .archive-disclosure summary:hover {
