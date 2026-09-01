@@ -1,0 +1,91 @@
+name: Build deck answer rule
+
+on:
+  push:
+    branches:
+      - agent/merge-deck-answer-rule
+    paths:
+      - .github/workflows/build-deck-answer-rule.yml
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/merge-deck-answer-rule
+          fetch-depth: 0
+
+      - name: Bring in confirmed DECK content
+        shell: bash
+        run: |
+          git fetch origin agent/add-answer-rule-intro
+          git show origin/agent/add-answer-rule-intro:deck/index.html > deck/index.html
+
+      - name: Add clean RULE 00 styles
+        shell: bash
+        run: |
+          if grep -q 'RULE 00 / BEFORE INTERVIEW' deck/style.css; then
+            echo 'RULE 00 styles already exist'
+            exit 1
+          fi
+
+          cat >> deck/style.css <<'CSS'
+
+          /* ===== RULE 00 / BEFORE INTERVIEW ===== */
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide {
+            padding: 20px 22px;
+          }
+
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide > strong {
+            display: block;
+            margin: 0.45rem 0 1.05rem;
+            padding: 0.15em 0 0.2em 0.55em;
+            color: var(--ink);
+            background: rgba(230, 221, 210, 0.06);
+            border-left: 5px solid var(--accent-dark);
+            font-family: var(--font-heading);
+            font-size: clamp(1.55rem, 3.2vw, 2.3rem);
+            font-weight: 700;
+            line-height: 1.45;
+            letter-spacing: 0.02em;
+          }
+
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p,
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong {
+            color: var(--ink);
+            overflow-wrap: normal;
+            line-break: strict;
+            word-break: normal;
+          }
+
+          @media (max-width: 620px) {
+            .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide > strong {
+              margin: 0.4rem 0 0.9rem;
+              padding-left: 0.45em;
+              font-size: clamp(1.35rem, 6vw, 1.75rem);
+              line-height: 1.42;
+            }
+          }
+          CSS
+
+      - name: Validate
+        shell: bash
+        run: |
+          git diff --check
+          test "$(grep -c 'id="deckAnswerRuleTitle"' deck/index.html)" -eq 1
+          test "$(grep -c 'RULE 00 / BEFORE INTERVIEW' deck/style.css)" -eq 1
+          test "$(grep -c '<section' deck/index.html)" -eq "$(grep -c '</section>' deck/index.html)"
+          git diff -- deck/index.html deck/style.css
+
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deck/index.html deck/style.css
+          git commit -m "DECKに面接回答の大前提ルールを追加"
+          git push origin HEAD:agent/merge-deck-answer-rule
