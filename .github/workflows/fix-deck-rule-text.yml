@@ -1,0 +1,71 @@
+name: Fix deck rule text color
+
+on:
+  push:
+    branches:
+      - agent/add-answer-rule-intro
+    paths:
+      - .github/workflows/fix-deck-rule-text.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/add-answer-rule-intro
+
+      - name: Apply scoped text color fix
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('deck/style.css')
+          text = path.read_text(encoding='utf-8')
+          marker = '''.review-header + .talk-guide p strong {
+  color: var(--ink);
+}
+'''
+          addition = '''.review-header + .talk-guide p strong {
+  color: var(--ink);
+}
+
+/* HOME / RULE 00: REVIEW TALKと同じ明るい本文色 */
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p {
+  color: var(--accent);
+  overflow-wrap: normal;
+  line-break: strict;
+  word-break: normal;
+}
+
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong {
+  color: var(--ink);
+}
+'''
+
+          if 'aria-labelledby="deckAnswerRuleTitle"] .talk-guide p' in text:
+              raise SystemExit('RULE 00 color fix already exists')
+          if marker not in text:
+              raise SystemExit('Expected REVIEW TALK color marker not found')
+
+          path.write_text(text.replace(marker, addition, 1), encoding='utf-8')
+          PY
+
+      - name: Validate
+        shell: bash
+        run: |
+          git diff --check
+          grep -n -A12 'HOME / RULE 00' deck/style.css
+
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deck/style.css
+          git commit -m "DECKのRULE 00本文色を読みやすく修正"
+          git push origin HEAD:agent/add-answer-rule-intro
