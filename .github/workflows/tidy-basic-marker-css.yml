@@ -22,17 +22,10 @@ jobs:
         shell: python
         run: |
           from pathlib import Path
-
           path = Path("last-check.css")
           text = path.read_text(encoding="utf-8")
-          old = '''  .last-check-basic-list li {
-          column-gap: 12px;
-          padding: 10px 8px;
-        }'''
-          new = '''  .last-check-basic-list li {
-            column-gap: 12px;
-            padding: 10px 8px;
-          }'''
+          old = "  .last-check-basic-list li {\n  column-gap: 12px;\n  padding: 10px 8px;\n}"
+          new = "  .last-check-basic-list li {\n    column-gap: 12px;\n    padding: 10px 8px;\n  }"
           assert text.count(old) == 1
           path.write_text(text.replace(old, new), encoding="utf-8")
 
