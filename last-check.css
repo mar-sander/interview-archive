@@ -304,9 +304,9 @@
   }
 
   .last-check-basic-list li {
-  column-gap: 12px;
-  padding: 10px 8px;
-}
+    column-gap: 12px;
+    padding: 10px 8px;
+  }
 
   .last-check-breath {
     padding: 14px 10px;
