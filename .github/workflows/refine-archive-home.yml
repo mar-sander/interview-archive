@@ -30,37 +30,19 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
 
           path = Path('index.html')
           text = path.read_text(encoding='utf-8')
 
-          old_rule = '''            <div class="statement-box">
-              <p>面接には、いろいろな質問があります。答え方にも、いろいろな工夫があります。</p>
-              <p><strong>でも、その前に。これだけは必ず守ってください。</strong></p>
-              <p><strong>質問されたら、まず答える。</strong></p>
-              <p>これが、面接で受け答えをするときの大前提となるルールです。</p>
+          rule_section = '''          <!-- ===== 面接回答の大前提 ===== -->
+          <section class="section-block" aria-labelledby="answerRuleTitle">
+            <div class="section-heading">
+              <span class="section-kicker">RULE 00 / FIRST PRINCIPLE</span>
+              <h2 id="answerRuleTitle">まず最初に。これだけは守ってください</h2>
             </div>
 
-            <div class="statement-box">
-              <p>たとえば、「高校生活で最も力を入れたことは何ですか？」と質問されたとします。</p>
-              <p>このとき、「1年生のときに先生から資格を勧められて、そのあと友達と一緒に勉強を始めて……」と、いきなり理由や経緯から話し始めると、聞いている人は「結局、何に力を入れた話なんだろう？」と、答えが分からないまま話を聞くことになります。</p>
-              <p>まずは、<strong>「私が高校生活で最も力を入れたことは、電気工事士の資格取得です。」</strong>と答えます。</p>
-              <p>そのあとに、「なぜ取り組んだのか」「どのように頑張ったのか」「そこから何を学んだのか」を話します。</p>
-              <p><strong>基本の順番は、結論 → 理由 → 具体的な経験です。</strong></p>
-            </div>
-
-            <div class="statement-box">
-              <p>これは、面接でうまく見せるための小手先のテクニックではありません。</p>
-              <p><strong>相手から訊かれたことに、きちんと答えるための基本です。</strong></p>
-              <p>どれだけ良い経験をしていても、どれだけ伝えたいことがあっても、最初に質問への答えがなければ、その良さは相手に伝わりにくくなります。</p>
-              <p>だから、これからこの質問集を使って練習するときも、まず最初に確認してください。</p>
-              <p><strong>「私は、訊かれたことに最初に答えているか？」</strong></p>
-              <p>迷ったら、このルールに戻ってください。</p>
-              <p><strong>質問されたら、まず答える。<br>結論を言ってから、理由を話す。</strong></p>
-              <p>これは、面接のすべての質問に共通する大前提です。</p>
-            </div>'''
-
-          new_rule = '''            <div class="statement-box rule-core-box">
+            <div class="statement-box rule-core-box">
               <p>面接には、いろいろな質問があります。答え方にも、いろいろな工夫があります。</p>
               <p><strong>でも、その前に。これだけは必ず守ってください。</strong></p>
               <p class="rule-core-message"><strong>質問されたら、まず答える。</strong></p>
@@ -91,40 +73,48 @@ jobs:
                 <p><strong>質問されたら、まず答える。<br>結論を言ってから、理由を話す。</strong></p>
                 <p>これは、面接のすべての質問に共通する大前提です。</p>
               </div>
-            </details>'''
+            </details>
+          </section>'''
 
-          if old_rule not in text:
-              raise SystemExit('RULE 00 source block not found')
-          text = text.replace(old_rule, new_rule, 1)
+          rule_pattern = re.compile(
+              r'          <!-- ===== 面接回答の大前提 ===== -->.*?          </section>\n\n(?=          <section class="section-block">)',
+              re.S,
+          )
+          text, rule_count = rule_pattern.subn(rule_section + '\n\n', text, count=1)
+          if rule_count != 1:
+              raise SystemExit(f'RULE 00 section replacement count: {rule_count}')
 
-          old_author_start = '''            <div class="statement-box">
-              <p><strong>M.M.</strong></p>
+          author_section = '''          <!-- ===== この質問集を作った人 ===== -->
+          <section class="section-block" aria-labelledby="aboutAuthorTitle">
+            <div class="section-heading">
+              <span class="section-kicker">ABOUT M.M.</span>
+              <h2 id="aboutAuthorTitle">この質問集を作った人</h2>
+            </div>
 
-              <p>松本工業高校卒業後、理科大へ進学。</p>'''
-          new_author_start = '''            <details class="archive-disclosure author-disclosure">
+            <details class="archive-disclosure author-disclosure">
               <summary>プロフィールを読む</summary>
               <div class="archive-disclosure-body">
                 <p><strong>M.M.</strong></p>
-
-                <p>松本工業高校卒業後、理科大へ進学。</p>'''
-          if old_author_start not in text:
-              raise SystemExit('Author start block not found')
-          text = text.replace(old_author_start, new_author_start, 1)
-
-          old_author_end = '''              <p>面接を「受ける側」と「採る側」、そして進路に迷いながら選び直してきた一人の人間として、この質問集を作っています。</p>
-            </div>
-          </section>
-
-          <!-- ===== 外部レビュー ===== -->'''
-          new_author_end = '''                <p>面接を「受ける側」と「採る側」、そして進路に迷いながら選び直してきた一人の人間として、この質問集を作っています。</p>
+                <p>松本工業高校卒業後、理科大へ進学。</p>
+                <p>在学中にWEB・デザイン・企画分野の個人事業を始める一方、大学卒業時の就職活動には失敗しました。</p>
+                <p>卒業後、個人事業を発展させて起業。会社経営と人事・採用に携わり、<strong>企業側の面接官・採用担当者</strong>を経験しました。</p>
+                <p>その後、体調を大きく崩して退任。<br>療養・リハビリを経て、今度は教育の世界へ進みます。</p>
+                <p>専門学校の立ち上げに携わり、教員・総務として勤務。ここでは、<strong>私立学校側の面接官・採用担当者</strong>も経験しました。</p>
+                <p>その後、工業高校へ転職し、県の公務員試験を経て、現在は工業高校の教員として勤務しています。</p>
+                <p>また、進路について本気で考えたい高校生を対象に、自主的な進路ゼミも行っています。</p>
+                <p><strong>就職に失敗したことも、仕事をつくったことも、採用する側になったことも、一度立ち止まって人生をやり直したこともあります。</strong></p>
+                <p>面接を「受ける側」と「採る側」、そして進路に迷いながら選び直してきた一人の人間として、この質問集を作っています。</p>
               </div>
             </details>
-          </section>
+          </section>'''
 
-          <!-- ===== 外部レビュー ===== -->'''
-          if old_author_end not in text:
-              raise SystemExit('Author end block not found')
-          text = text.replace(old_author_end, new_author_end, 1)
+          author_pattern = re.compile(
+              r'          <!-- ===== この質問集を作った人 ===== -->.*?(?=          <!-- ===== 外部レビュー ===== -->)',
+              re.S,
+          )
+          text, author_count = author_pattern.subn(author_section + '\n\n', text, count=1)
+          if author_count != 1:
+              raise SystemExit(f'Author section replacement count: {author_count}')
 
           path.write_text(text, encoding='utf-8')
           PY
@@ -132,6 +122,11 @@ jobs:
       - name: Add disclosure styles
         shell: bash
         run: |
+          if grep -q 'HOME compact disclosures' style.css; then
+            echo 'Disclosure styles already exist'
+            exit 1
+          fi
+
           cat >> style.css <<'CSS'
 
           /* ===== HOME compact disclosures ===== */
