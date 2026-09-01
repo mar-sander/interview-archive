@@ -1,6 +1,6 @@
 /* ================================================================
    INTERVIEW QUESTION ARCHIVE / BOOTSTRAP
-   Q&Aの画面を先に組み込み、既存のアーカイブ本体を読み込む。
+   Q&Aと面接直前チェックの画面を先に組み込み、既存のアーカイブ本体を読み込む。
    ================================================================ */
 
 (() => {
@@ -14,8 +14,13 @@
   loadScript("qa.js", () => {
     window.InterviewQA?.installShell();
 
-    loadScript("archive-core.js", () => {
-      window.InterviewQA?.initialize();
+    loadScript("last-check.js", () => {
+      window.InterviewLastCheck?.installShell();
+
+      loadScript("archive-core.js", () => {
+        window.InterviewQA?.initialize();
+        window.InterviewLastCheck?.initialize();
+      });
     });
   });
 })();
