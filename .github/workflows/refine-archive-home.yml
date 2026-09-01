@@ -1,0 +1,230 @@
+name: Refine archive home
+
+on:
+  push:
+    branches:
+      - agent/refine-archive-home
+    paths:
+      - .github/workflows/refine-archive-home.yml
+
+permissions:
+  contents: write
+
+jobs:
+  refine:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/refine-archive-home
+          fetch-depth: 0
+
+      - name: Bring in RULE 00 draft
+        shell: bash
+        run: |
+          git fetch origin agent/add-answer-rule-intro
+          git show origin/agent/add-answer-rule-intro:index.html > index.html
+
+      - name: Fold long HOME content
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          path = Path('index.html')
+          text = path.read_text(encoding='utf-8')
+
+          old_rule = '''            <div class="statement-box">
+              <p>面接には、いろいろな質問があります。答え方にも、いろいろな工夫があります。</p>
+              <p><strong>でも、その前に。これだけは必ず守ってください。</strong></p>
+              <p><strong>質問されたら、まず答える。</strong></p>
+              <p>これが、面接で受け答えをするときの大前提となるルールです。</p>
+            </div>
+
+            <div class="statement-box">
+              <p>たとえば、「高校生活で最も力を入れたことは何ですか？」と質問されたとします。</p>
+              <p>このとき、「1年生のときに先生から資格を勧められて、そのあと友達と一緒に勉強を始めて……」と、いきなり理由や経緯から話し始めると、聞いている人は「結局、何に力を入れた話なんだろう？」と、答えが分からないまま話を聞くことになります。</p>
+              <p>まずは、<strong>「私が高校生活で最も力を入れたことは、電気工事士の資格取得です。」</strong>と答えます。</p>
+              <p>そのあとに、「なぜ取り組んだのか」「どのように頑張ったのか」「そこから何を学んだのか」を話します。</p>
+              <p><strong>基本の順番は、結論 → 理由 → 具体的な経験です。</strong></p>
+            </div>
+
+            <div class="statement-box">
+              <p>これは、面接でうまく見せるための小手先のテクニックではありません。</p>
+              <p><strong>相手から訊かれたことに、きちんと答えるための基本です。</strong></p>
+              <p>どれだけ良い経験をしていても、どれだけ伝えたいことがあっても、最初に質問への答えがなければ、その良さは相手に伝わりにくくなります。</p>
+              <p>だから、これからこの質問集を使って練習するときも、まず最初に確認してください。</p>
+              <p><strong>「私は、訊かれたことに最初に答えているか？」</strong></p>
+              <p>迷ったら、このルールに戻ってください。</p>
+              <p><strong>質問されたら、まず答える。<br>結論を言ってから、理由を話す。</strong></p>
+              <p>これは、面接のすべての質問に共通する大前提です。</p>
+            </div>'''
+
+          new_rule = '''            <div class="statement-box rule-core-box">
+              <p>面接には、いろいろな質問があります。答え方にも、いろいろな工夫があります。</p>
+              <p><strong>でも、その前に。これだけは必ず守ってください。</strong></p>
+              <p class="rule-core-message"><strong>質問されたら、まず答える。</strong></p>
+              <p>これが、面接で受け答えをするときの大前提となるルールです。</p>
+              <p><strong>結論を言ってから、理由を話す。</strong></p>
+            </div>
+
+            <details class="archive-disclosure">
+              <summary>具体例を見る</summary>
+              <div class="archive-disclosure-body">
+                <p>たとえば、「高校生活で最も力を入れたことは何ですか？」と質問されたとします。</p>
+                <p>このとき、「1年生のときに先生から資格を勧められて、そのあと友達と一緒に勉強を始めて……」と、いきなり理由や経緯から話し始めると、聞いている人は「結局、何に力を入れた話なんだろう？」と、答えが分からないまま話を聞くことになります。</p>
+                <p>まずは、<strong>「私が高校生活で最も力を入れたことは、電気工事士の資格取得です。」</strong>と答えます。</p>
+                <p>そのあとに、「なぜ取り組んだのか」「どのように頑張ったのか」「そこから何を学んだのか」を話します。</p>
+                <p><strong>基本の順番は、結論 → 理由 → 具体的な経験です。</strong></p>
+              </div>
+            </details>
+
+            <details class="archive-disclosure">
+              <summary>なぜ、このルールが大切なのか</summary>
+              <div class="archive-disclosure-body">
+                <p>これは、面接でうまく見せるための小手先のテクニックではありません。</p>
+                <p><strong>相手から訊かれたことに、きちんと答えるための基本です。</strong></p>
+                <p>どれだけ良い経験をしていても、どれだけ伝えたいことがあっても、最初に質問への答えがなければ、その良さは相手に伝わりにくくなります。</p>
+                <p>だから、これからこの質問集を使って練習するときも、まず最初に確認してください。</p>
+                <p><strong>「私は、訊かれたことに最初に答えているか？」</strong></p>
+                <p>迷ったら、このルールに戻ってください。</p>
+                <p><strong>質問されたら、まず答える。<br>結論を言ってから、理由を話す。</strong></p>
+                <p>これは、面接のすべての質問に共通する大前提です。</p>
+              </div>
+            </details>'''
+
+          if old_rule not in text:
+              raise SystemExit('RULE 00 source block not found')
+          text = text.replace(old_rule, new_rule, 1)
+
+          old_author_start = '''            <div class="statement-box">
+              <p><strong>M.M.</strong></p>
+
+              <p>松本工業高校卒業後、理科大へ進学。</p>'''
+          new_author_start = '''            <details class="archive-disclosure author-disclosure">
+              <summary>プロフィールを読む</summary>
+              <div class="archive-disclosure-body">
+                <p><strong>M.M.</strong></p>
+
+                <p>松本工業高校卒業後、理科大へ進学。</p>'''
+          if old_author_start not in text:
+              raise SystemExit('Author start block not found')
+          text = text.replace(old_author_start, new_author_start, 1)
+
+          old_author_end = '''              <p>面接を「受ける側」と「採る側」、そして進路に迷いながら選び直してきた一人の人間として、この質問集を作っています。</p>
+            </div>
+          </section>
+
+          <!-- ===== 外部レビュー ===== -->'''
+          new_author_end = '''                <p>面接を「受ける側」と「採る側」、そして進路に迷いながら選び直してきた一人の人間として、この質問集を作っています。</p>
+              </div>
+            </details>
+          </section>
+
+          <!-- ===== 外部レビュー ===== -->'''
+          if old_author_end not in text:
+              raise SystemExit('Author end block not found')
+          text = text.replace(old_author_end, new_author_end, 1)
+
+          path.write_text(text, encoding='utf-8')
+          PY
+
+      - name: Add disclosure styles
+        shell: bash
+        run: |
+          cat >> style.css <<'CSS'
+
+          /* ===== HOME compact disclosures ===== */
+          .rule-core-message {
+            margin: .65rem 0;
+            font-family: var(--font-heading);
+            font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+            line-height: 1.45;
+          }
+
+          .archive-disclosure {
+            margin-top: 14px;
+            background: rgba(76, 74, 71, .94);
+            border: 1px solid var(--ink);
+            box-shadow: 4px 4px 0 var(--shadow);
+          }
+
+          .archive-disclosure summary {
+            position: relative;
+            padding: 15px 54px 15px 20px;
+            color: var(--ink);
+            font-weight: 700;
+            cursor: pointer;
+            list-style: none;
+            background: rgba(86, 82, 79, .72);
+          }
+
+          .archive-disclosure summary::-webkit-details-marker {
+            display: none;
+          }
+
+          .archive-disclosure summary::after {
+            position: absolute;
+            top: 50%;
+            right: 20px;
+            content: "＋";
+            font-size: 1.2rem;
+            line-height: 1;
+            transform: translateY(-50%);
+          }
+
+          .archive-disclosure[open] summary::after {
+            content: "−";
+          }
+
+          .archive-disclosure summary:hover {
+            background: rgba(98, 93, 88, .78);
+          }
+
+          .archive-disclosure[open] summary {
+            border-bottom: 1px solid var(--line-soft);
+          }
+
+          .archive-disclosure-body {
+            padding: 16px 20px 18px;
+          }
+
+          .archive-disclosure-body p {
+            margin: .35rem 0;
+          }
+
+          .author-disclosure {
+            margin-top: 0;
+          }
+
+          @media (max-width: 620px) {
+            .archive-disclosure summary {
+              padding: 14px 48px 14px 16px;
+            }
+
+            .archive-disclosure-body {
+              padding: 14px 16px 16px;
+            }
+          }
+          CSS
+
+      - name: Validate
+        shell: bash
+        run: |
+          git diff --check
+          test "$(grep -c 'id="answerRuleTitle"' index.html)" -eq 1
+          test "$(grep -c '<details class="archive-disclosure' index.html)" -eq 3
+          test "$(grep -c '<details' index.html)" -eq "$(grep -c '</details>' index.html)"
+          test "$(grep -c '<section' index.html)" -eq "$(grep -c '</section>' index.html)"
+          grep -q 'プロフィールを読む' index.html
+          grep -q '具体例を見る' index.html
+          grep -q 'なぜ、このルールが大切なのか' index.html
+
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html style.css
+          git commit -m "質問集トップの長文を折り畳み化"
+          git push origin HEAD:agent/refine-archive-home
