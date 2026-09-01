@@ -1376,3 +1376,57 @@ body.auth-locked > .auth-gate {
     padding: 14px 16px 16px;
   }
 }
+
+/* ===== HOME disclosure visual correction ===== */
+.archive-disclosure {
+  margin-top: 14px;
+  background: rgba(76, 74, 71, .94);
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.archive-disclosure > summary {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 14px;
+  width: 100%;
+  padding: 15px 20px;
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  background: var(--surface-2);
+}
+
+.archive-disclosure > summary::marker {
+  content: "";
+  display: none;
+}
+
+.archive-disclosure > summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive-disclosure > summary::after {
+  flex: 0 0 auto;
+  width: .58rem;
+  height: .58rem;
+  content: "";
+  border-right: 2px solid currentColor;
+  border-bottom: 2px solid currentColor;
+  transform: rotate(45deg);
+  transition: transform .16s ease;
+}
+
+.archive-disclosure[open] > summary::after {
+  transform: rotate(225deg);
+}
+
+.archive-disclosure > summary:hover {
+  background: rgba(98, 93, 88, .78);
+}
+
+.archive-disclosure[open] > summary {
+  border-bottom: 1px solid var(--line-soft);
+}
