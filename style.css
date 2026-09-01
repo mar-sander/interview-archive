@@ -1301,3 +1301,78 @@ body.auth-locked > .auth-gate {
   }
 }
 
+
+/* ===== HOME compact disclosures ===== */
+.rule-core-message {
+  margin: .65rem 0;
+  font-family: var(--font-heading);
+  font-size: clamp(1.35rem, 2.6vw, 1.9rem);
+  line-height: 1.45;
+}
+
+.archive-disclosure {
+  margin-top: 14px;
+  background: rgba(76, 74, 71, .94);
+  border: 1px solid var(--ink);
+  box-shadow: 4px 4px 0 var(--shadow);
+}
+
+.archive-disclosure summary {
+  position: relative;
+  padding: 15px 54px 15px 20px;
+  color: var(--ink);
+  font-weight: 700;
+  cursor: pointer;
+  list-style: none;
+  background: rgba(86, 82, 79, .72);
+}
+
+.archive-disclosure summary::-webkit-details-marker {
+  display: none;
+}
+
+.archive-disclosure summary::after {
+  position: absolute;
+  top: 50%;
+  right: 22px;
+  width: 10px;
+  height: 10px;
+  content: "";
+  border-right: 2px solid var(--ink);
+  border-bottom: 2px solid var(--ink);
+  transform: translateY(-65%) rotate(45deg);
+}
+
+.archive-disclosure[open] summary::after {
+  transform: translateY(-35%) rotate(-135deg);
+}
+
+.archive-disclosure summary:hover {
+  background: rgba(98, 93, 88, .78);
+}
+
+.archive-disclosure[open] summary {
+  border-bottom: 1px solid var(--line-soft);
+}
+
+.archive-disclosure-body {
+  padding: 16px 20px 18px;
+}
+
+.archive-disclosure-body p {
+  margin: .35rem 0;
+}
+
+.author-disclosure {
+  margin-top: 0;
+}
+
+@media (max-width: 620px) {
+  .archive-disclosure summary {
+    padding: 14px 48px 14px 16px;
+  }
+
+  .archive-disclosure-body {
+    padding: 14px 16px 16px;
+  }
+}
