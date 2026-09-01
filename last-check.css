@@ -80,17 +80,17 @@
 }
 
 .last-check-basic-list li {
-  position: relative;
-  padding: 11px 12px 11px 34px;
+  display: grid;
+  grid-template-columns: 8px minmax(0, 1fr);
+  align-items: center;
+  column-gap: 14px;
+  padding: 11px 12px;
   line-height: 1.7;
   background: rgba(230, 221, 210, .045);
   border-bottom: 1px solid var(--line-soft);
 }
 
 .last-check-basic-list li::before {
-  position: absolute;
-  top: 1.05em;
-  left: 12px;
   width: 8px;
   height: 8px;
   content: "";
@@ -304,12 +304,9 @@
   }
 
   .last-check-basic-list li {
-    padding: 10px 8px 10px 29px;
-  }
-
-  .last-check-basic-list li::before {
-    left: 9px;
-  }
+  column-gap: 12px;
+  padding: 10px 8px;
+}
 
   .last-check-breath {
     padding: 14px 10px;
