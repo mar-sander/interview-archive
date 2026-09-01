@@ -1,0 +1,105 @@
+name: Fix basic marker alignment
+
+on:
+  push:
+    branches:
+      - agent/add-last-check-page
+    paths:
+      - .github/workflows/fix-basic-marker-align.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/add-last-check-page
+
+      - name: Replace absolute marker positioning with grid alignment
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("last-check.css")
+          text = path.read_text(encoding="utf-8")
+
+          old = '''.last-check-basic-list li {
+            position: relative;
+            padding: 11px 12px 11px 34px;
+            line-height: 1.7;
+            background: rgba(230, 221, 210, .045);
+            border-bottom: 1px solid var(--line-soft);
+          }
+
+          .last-check-basic-list li::before {
+            position: absolute;
+            top: 1.05em;
+            left: 12px;
+            width: 8px;
+            height: 8px;
+            content: "";
+            background: var(--accent);
+            transform: rotate(45deg);
+          }
+          '''
+
+          new = '''.last-check-basic-list li {
+            display: grid;
+            grid-template-columns: 8px minmax(0, 1fr);
+            align-items: center;
+            column-gap: 14px;
+            padding: 11px 12px;
+            line-height: 1.7;
+            background: rgba(230, 221, 210, .045);
+            border-bottom: 1px solid var(--line-soft);
+          }
+
+          .last-check-basic-list li::before {
+            width: 8px;
+            height: 8px;
+            content: "";
+            background: var(--accent);
+            transform: rotate(45deg);
+          }
+          '''
+
+          old_mobile = '''  .last-check-basic-list li {
+            padding: 10px 8px 10px 29px;
+          }
+
+          .last-check-basic-list li::before {
+            left: 9px;
+          }
+          '''
+
+          new_mobile = '''  .last-check-basic-list li {
+            column-gap: 12px;
+            padding: 10px 8px;
+          }
+          '''
+
+          assert text.count(old) == 1, "desktop marker block must exist exactly once"
+          assert text.count(old_mobile) == 1, "mobile marker block must exist exactly once"
+
+          text = text.replace(old, new).replace(old_mobile, new_mobile)
+          path.write_text(text, encoding="utf-8")
+
+      - name: Validate
+        shell: bash
+        run: |
+          grep -q 'grid-template-columns: 8px minmax(0, 1fr);' last-check.css
+          grep -q 'align-items: center;' last-check.css
+          ! grep -q 'top: 1.05em;' last-check.css
+          git diff --check
+
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add last-check.css
+          git commit -m "最重要項目のマーカーをGridで中央揃え"
+          git push origin HEAD:agent/add-last-check-page
