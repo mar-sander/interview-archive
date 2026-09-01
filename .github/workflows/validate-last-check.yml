@@ -18,6 +18,8 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: JavaScript syntax
         run: |
@@ -42,4 +44,4 @@ jobs:
           grep -q 'last-check-sendoff' last-check.css
 
       - name: Diff check
-        run: git diff --check HEAD^ HEAD
+        run: git diff --check origin/main...HEAD -- last-check.js last-check.css script.js
