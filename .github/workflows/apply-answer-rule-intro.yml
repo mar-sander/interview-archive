@@ -24,16 +24,27 @@ jobs:
         run: |
           python - <<'PY'
           from pathlib import Path
+          import re
+          import textwrap
 
-          archive_path = Path("index.html")
-          archive = archive_path.read_text(encoding="utf-8")
-          archive_marker = '''            <p class="hero-note">答えを覚えるのではなく、問いの意図を読む力を育てる。</p>
-          </div>
+          def insert_after_hero(path, hero_note, section_id, section_html):
+              text = path.read_text(encoding="utf-8")
+              if f'id="{section_id}"' in text:
+                  raise SystemExit(f"{section_id} already exists in {path}")
 
-          <section class="section-block">'''
-          archive_replacement = '''            <p class="hero-note">答えを覚えるのではなく、問いの意図を読む力を育てる。</p>
-          </div>
+              pattern = re.compile(
+                  rf'(<p class="hero-note">{re.escape(hero_note)}</p>\s*</div>)',
+                  re.MULTILINE,
+              )
+              match = pattern.search(text)
+              if not match:
+                  raise SystemExit(f"Hero marker not found in {path}")
 
+              section = textwrap.indent(textwrap.dedent(section_html).strip(), "          ")
+              updated = text[:match.end()] + "\n\n" + section + text[match.end():]
+              path.write_text(updated, encoding="utf-8")
+
+          archive_section = '''
           <!-- ===== 面接回答の大前提 ===== -->
           <section class="section-block" aria-labelledby="answerRuleTitle">
             <div class="section-heading">
@@ -67,24 +78,9 @@ jobs:
               <p>これは、面接のすべての質問に共通する大前提です。</p>
             </div>
           </section>
+          '''
 
-          <section class="section-block">'''
-
-          if archive_marker not in archive:
-              raise SystemExit("Archive insertion marker not found")
-          if 'id="answerRuleTitle"' in archive:
-              raise SystemExit("Archive rule section already exists")
-          archive_path.write_text(archive.replace(archive_marker, archive_replacement, 1), encoding="utf-8")
-
-          deck_path = Path("deck/index.html")
-          deck = deck_path.read_text(encoding="utf-8")
-          deck_marker = '''            <p class="hero-note">質問する・観察する・問い返す・感想戦で返す。使うほど育っていく、No.M専用の面接運用デッキ。</p>
-          </div>
-
-          <section class="section-block">'''
-          deck_replacement = '''            <p class="hero-note">質問する・観察する・問い返す・感想戦で返す。使うほど育っていく、No.M専用の面接運用デッキ。</p>
-          </div>
-
+          deck_section = '''
           <!-- ===== 面接開始前に必ず伝えるルール ===== -->
           <section class="section-block" aria-labelledby="deckAnswerRuleTitle">
             <div class="section-heading">
@@ -115,23 +111,31 @@ jobs:
               <p>面接のいろいろな技術は、その土台の上に乗ります。</p>
             </div>
           </section>
+          '''
 
-          <section class="section-block">'''
+          archive_path = Path("index.html")
+          deck_path = Path("deck/index.html")
 
-          if deck_marker not in deck:
-              raise SystemExit("Deck insertion marker not found")
-          if 'id="deckAnswerRuleTitle"' in deck:
-              raise SystemExit("Deck rule section already exists")
-          deck_path.write_text(deck.replace(deck_marker, deck_replacement, 1), encoding="utf-8")
+          insert_after_hero(
+              archive_path,
+              "答えを覚えるのではなく、問いの意図を読む力を育てる。",
+              "answerRuleTitle",
+              archive_section,
+          )
+          insert_after_hero(
+              deck_path,
+              "質問する・観察する・問い返す・感想戦で返す。使うほど育っていく、No.M専用の面接運用デッキ。",
+              "deckAnswerRuleTitle",
+              deck_section,
+          )
 
-          for path, required_ids in [
-              (archive_path, ["answerRuleTitle"]),
-              (deck_path, ["deckAnswerRuleTitle"]),
+          for path, section_id in [
+              (archive_path, "answerRuleTitle"),
+              (deck_path, "deckAnswerRuleTitle"),
           ]:
               text = path.read_text(encoding="utf-8")
-              for required_id in required_ids:
-                  if f'id="{required_id}"' not in text:
-                      raise SystemExit(f"Missing {required_id} in {path}")
+              if text.count(f'id="{section_id}"') != 1:
+                  raise SystemExit(f"Unexpected {section_id} count in {path}")
               if text.count("<section") != text.count("</section>"):
                   raise SystemExit(f"Section tag count mismatch in {path}")
           PY
