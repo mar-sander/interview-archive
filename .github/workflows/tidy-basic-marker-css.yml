@@ -1,0 +1,47 @@
+name: Tidy basic marker CSS
+
+on:
+  push:
+    branches:
+      - agent/add-last-check-page
+    paths:
+      - .github/workflows/tidy-basic-marker-css.yml
+
+permissions:
+  contents: write
+
+jobs:
+  tidy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/add-last-check-page
+
+      - name: Tidy mobile rule indentation
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("last-check.css")
+          text = path.read_text(encoding="utf-8")
+          old = '''  .last-check-basic-list li {
+          column-gap: 12px;
+          padding: 10px 8px;
+        }'''
+          new = '''  .last-check-basic-list li {
+            column-gap: 12px;
+            padding: 10px 8px;
+          }'''
+          assert text.count(old) == 1
+          path.write_text(text.replace(old, new), encoding="utf-8")
+
+      - name: Validate and commit
+        shell: bash
+        run: |
+          git diff --check
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add last-check.css
+          git commit -m "モバイル用マーカーCSSの整形を調整"
+          git push origin HEAD:agent/add-last-check-page
