@@ -1,0 +1,153 @@
+name: Apply answer rule intro
+
+on:
+  push:
+    branches:
+      - agent/add-answer-rule-intro
+    paths:
+      - .github/workflows/apply-answer-rule-intro.yml
+
+permissions:
+  contents: write
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout trial branch
+        uses: actions/checkout@v4
+        with:
+          ref: agent/add-answer-rule-intro
+
+      - name: Insert rule sections
+        shell: bash
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+
+          archive_path = Path("index.html")
+          archive = archive_path.read_text(encoding="utf-8")
+          archive_marker = '''            <p class="hero-note">答えを覚えるのではなく、問いの意図を読む力を育てる。</p>
+          </div>
+
+          <section class="section-block">'''
+          archive_replacement = '''            <p class="hero-note">答えを覚えるのではなく、問いの意図を読む力を育てる。</p>
+          </div>
+
+          <!-- ===== 面接回答の大前提 ===== -->
+          <section class="section-block" aria-labelledby="answerRuleTitle">
+            <div class="section-heading">
+              <span class="section-kicker">RULE 00 / FIRST PRINCIPLE</span>
+              <h2 id="answerRuleTitle">まず最初に。これだけは守ってください</h2>
+            </div>
+
+            <div class="statement-box">
+              <p>面接には、いろいろな質問があります。答え方にも、いろいろな工夫があります。</p>
+              <p><strong>でも、その前に。これだけは必ず守ってください。</strong></p>
+              <p><strong>質問されたら、まず答える。</strong></p>
+              <p>これが、面接で受け答えをするときの大前提となるルールです。</p>
+            </div>
+
+            <div class="statement-box">
+              <p>たとえば、「高校生活で最も力を入れたことは何ですか？」と質問されたとします。</p>
+              <p>このとき、「1年生のときに先生から資格を勧められて、そのあと友達と一緒に勉強を始めて……」と、いきなり理由や経緯から話し始めると、聞いている人は「結局、何に力を入れた話なんだろう？」と、答えが分からないまま話を聞くことになります。</p>
+              <p>まずは、<strong>「私が高校生活で最も力を入れたことは、電気工事士の資格取得です。」</strong>と答えます。</p>
+              <p>そのあとに、「なぜ取り組んだのか」「どのように頑張ったのか」「そこから何を学んだのか」を話します。</p>
+              <p><strong>基本の順番は、結論 → 理由 → 具体的な経験です。</strong></p>
+            </div>
+
+            <div class="statement-box">
+              <p>これは、面接でうまく見せるための小手先のテクニックではありません。</p>
+              <p><strong>相手から訊かれたことに、きちんと答えるための基本です。</strong></p>
+              <p>どれだけ良い経験をしていても、どれだけ伝えたいことがあっても、最初に質問への答えがなければ、その良さは相手に伝わりにくくなります。</p>
+              <p>だから、これからこの質問集を使って練習するときも、まず最初に確認してください。</p>
+              <p><strong>「私は、訊かれたことに最初に答えているか？」</strong></p>
+              <p>迷ったら、このルールに戻ってください。</p>
+              <p><strong>質問されたら、まず答える。<br>結論を言ってから、理由を話す。</strong></p>
+              <p>これは、面接のすべての質問に共通する大前提です。</p>
+            </div>
+          </section>
+
+          <section class="section-block">'''
+
+          if archive_marker not in archive:
+              raise SystemExit("Archive insertion marker not found")
+          if 'id="answerRuleTitle"' in archive:
+              raise SystemExit("Archive rule section already exists")
+          archive_path.write_text(archive.replace(archive_marker, archive_replacement, 1), encoding="utf-8")
+
+          deck_path = Path("deck/index.html")
+          deck = deck_path.read_text(encoding="utf-8")
+          deck_marker = '''            <p class="hero-note">質問する・観察する・問い返す・感想戦で返す。使うほど育っていく、No.M専用の面接運用デッキ。</p>
+          </div>
+
+          <section class="section-block">'''
+          deck_replacement = '''            <p class="hero-note">質問する・観察する・問い返す・感想戦で返す。使うほど育っていく、No.M専用の面接運用デッキ。</p>
+          </div>
+
+          <!-- ===== 面接開始前に必ず伝えるルール ===== -->
+          <section class="section-block" aria-labelledby="deckAnswerRuleTitle">
+            <div class="section-heading">
+              <span class="section-kicker">RULE 00 / BEFORE INTERVIEW</span>
+              <h2 id="deckAnswerRuleTitle">最初に、絶対に守ってほしいルール</h2>
+            </div>
+
+            <div class="talk-guide">
+              <span class="review-label">TALK SCRIPT</span>
+              <strong>質問されたら、まず答える。</strong>
+              <p>今日は面接について、いろいろなことを話します。</p>
+              <p>質問の意図とか、答え方とか、自分の経験の伝え方とか、覚えてほしいことはたくさんあります。</p>
+              <p><strong>でも、その前に。全部忘れてもいいとは言わないけど、まずこれだけは絶対に覚えて帰ってください。</strong></p>
+              <p><strong>質問されたら、まず答える。</strong></p>
+              <p>これが、面接の受け答えで守ってほしい大前提のルールです。</p>
+              <p>たとえば、「高校生活で最も力を入れたことは何ですか？」って訊かれたとする。</p>
+              <p>そこで、「1年生のときに先生から資格を勧められて、そのあと友達と勉強を始めて……」って話し始めると、聞いている側は途中まで、「で、結局この子は何を頑張ったんだ？」って分からないんです。</p>
+              <p>だから、まず答える。</p>
+              <p><strong>「私が高校生活で最も力を入れたことは、電気工事士の資格取得です。」</strong></p>
+              <p>ここまで言ってから、「なぜ取り組んだのか」「どう頑張ったのか」「そこから何を学んだのか」を話せばいい。</p>
+              <p><strong>順番は、結論 → 理由 → 具体的な経験です。</strong></p>
+              <p>これは、面接でそれっぽく話すためのテクニックじゃありません。</p>
+              <p><strong>相手から訊かれたことに、ちゃんと答えるための基本です。</strong></p>
+              <p>どれだけ良い経験をしていても、話したいことをたくさん持っていても、質問に対する答えが最初に出てこなければ、相手には伝わりにくい。</p>
+              <p>だから面接練習中、私が<strong>「今、まず答えられてた？」</strong>って訊くことがあると思います。そのときは、このルールを思い出してください。</p>
+              <p><strong>質問されたら、まず答える。<br>結論を言ってから、理由を話す。</strong></p>
+              <p>まずはこれを守る。その上で、質問の意図を考えたり、自分の経験を深く話したりしていこう。</p>
+              <p>面接のいろいろな技術は、その土台の上に乗ります。</p>
+            </div>
+          </section>
+
+          <section class="section-block">'''
+
+          if deck_marker not in deck:
+              raise SystemExit("Deck insertion marker not found")
+          if 'id="deckAnswerRuleTitle"' in deck:
+              raise SystemExit("Deck rule section already exists")
+          deck_path.write_text(deck.replace(deck_marker, deck_replacement, 1), encoding="utf-8")
+
+          for path, required_ids in [
+              (archive_path, ["answerRuleTitle"]),
+              (deck_path, ["deckAnswerRuleTitle"]),
+          ]:
+              text = path.read_text(encoding="utf-8")
+              for required_id in required_ids:
+                  if f'id="{required_id}"' not in text:
+                      raise SystemExit(f"Missing {required_id} in {path}")
+              if text.count("<section") != text.count("</section>"):
+                  raise SystemExit(f"Section tag count mismatch in {path}")
+          PY
+
+      - name: Validate diff
+        shell: bash
+        run: |
+          git diff --check
+          git diff -- index.html deck/index.html
+
+      - name: Commit trial implementation
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add index.html deck/index.html
+          git diff --cached --quiet && exit 0
+          git commit -m "面接回答の大前提ルールを追加"
+          git push origin HEAD:agent/add-answer-rule-intro
