@@ -21,45 +21,30 @@ jobs:
       - name: Apply scoped text color fix
         shell: bash
         run: |
-          python - <<'PY'
-          from pathlib import Path
+          if grep -q 'RULE 00 bright text fix' deck/style.css; then
+            echo 'Fix already exists'
+            exit 1
+          fi
+          cat >> deck/style.css <<'CSS'
 
-          path = Path('deck/style.css')
-          text = path.read_text(encoding='utf-8')
-          marker = '''.review-header + .talk-guide p strong {
-  color: var(--ink);
-}
-'''
-          addition = '''.review-header + .talk-guide p strong {
-  color: var(--ink);
-}
+          /* RULE 00 bright text fix */
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p {
+            color: var(--accent);
+            overflow-wrap: normal;
+            line-break: strict;
+            word-break: normal;
+          }
 
-/* HOME / RULE 00: REVIEW TALKと同じ明るい本文色 */
-.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p {
-  color: var(--accent);
-  overflow-wrap: normal;
-  line-break: strict;
-  word-break: normal;
-}
-
-.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong {
-  color: var(--ink);
-}
-'''
-
-          if 'aria-labelledby="deckAnswerRuleTitle"] .talk-guide p' in text:
-              raise SystemExit('RULE 00 color fix already exists')
-          if marker not in text:
-              raise SystemExit('Expected REVIEW TALK color marker not found')
-
-          path.write_text(text.replace(marker, addition, 1), encoding='utf-8')
-          PY
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong {
+            color: var(--ink);
+          }
+          CSS
 
       - name: Validate
         shell: bash
         run: |
           git diff --check
-          grep -n -A12 'HOME / RULE 00' deck/style.css
+          grep -n -A12 'RULE 00 bright text fix' deck/style.css
 
       - name: Commit
         shell: bash
