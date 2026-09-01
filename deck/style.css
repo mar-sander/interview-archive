@@ -752,3 +752,10 @@ h1 { margin: .5em 0 .22em; letter-spacing: -.04em; }
 .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong {
   color: var(--ink);
 }
+
+/* RULE 00 final ink override */
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p,
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong,
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide > strong {
+  color: var(--ink);
+}
