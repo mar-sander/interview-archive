@@ -1,0 +1,56 @@
+name: Fix last check copy
+
+on:
+  push:
+    branches:
+      - agent/add-last-check-page
+    paths:
+      - .github/workflows/fix-last-check-copy.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/add-last-check-page
+
+      - name: Apply copy corrections
+        shell: python
+        run: |
+          from pathlib import Path
+
+          path = Path("last-check.js")
+          text = path.read_text(encoding="utf-8")
+
+          old_basic = '<li><strong>質問されたら、まず答える。</strong></li>'
+          new_basic = '<li><strong>質問されたら、まず結論から答える。</strong></li>'
+          old_sendoff = '<p class="last-check-sendoff"><strong>目の前の人と、ちゃんと話してこよう。</strong></p>'
+          new_sendoff = '<p class="last-check-sendoff"><strong>目の前の人と、ちゃんと対話してこよう。</strong></p>'
+
+          assert text.count(old_basic) == 1, "ABSOLUTE BASICS target must exist exactly once"
+          assert text.count(old_sendoff) == 1, "sendoff target must exist exactly once"
+
+          text = text.replace(old_basic, new_basic)
+          text = text.replace(old_sendoff, new_sendoff)
+          path.write_text(text, encoding="utf-8")
+
+      - name: Validate
+        shell: bash
+        run: |
+          node --check last-check.js
+          test "$(grep -c '質問されたら、まず結論から答える。' last-check.js)" -eq 1
+          test "$(grep -c '目の前の人と、ちゃんと対話してこよう。' last-check.js)" -eq 1
+          git diff --check
+
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add last-check.js
+          git commit -m "面接直前チェックの要点文言を調整"
+          git push origin HEAD:agent/add-last-check-page
