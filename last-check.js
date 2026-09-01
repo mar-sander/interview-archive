@@ -86,7 +86,7 @@
 
           <div class="last-check-basics">
             <ul class="last-check-basic-list">
-              <li><strong>質問されたら、まず答える。</strong></li>
+              <li><strong>質問されたら、まず結論から答える。</strong></li>
               <li><strong>相手の話を最後まで聞く。</strong></li>
               <li><strong>少しくらい考えてから答えていい。</strong></li>
               <li><strong>分からないことは、ごまかさない。</strong></li>
@@ -300,7 +300,7 @@
             <p>ここまで準備してきたなら、もう直前に新しいことを増やさなくていい。</p>
             <p>深呼吸して。</p>
             <p>姿勢を整えて。</p>
-            <p class="last-check-sendoff"><strong>目の前の人と、ちゃんと話してこよう。</strong></p>
+            <p class="last-check-sendoff"><strong>目の前の人と、ちゃんと対話してこよう。</strong></p>
           </div>
         </section>
       </section>
