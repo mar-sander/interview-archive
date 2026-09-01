@@ -740,3 +740,15 @@ h1 { margin: .5em 0 .22em; letter-spacing: -.04em; }
     padding: 16px 14px 18px;
   }
 }
+
+/* RULE 00 bright text fix */
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p {
+  color: var(--accent);
+  overflow-wrap: normal;
+  line-break: strict;
+  word-break: normal;
+}
+
+.section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong {
+  color: var(--ink);
+}
