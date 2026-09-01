@@ -1,0 +1,51 @@
+name: Fix deck rule ink
+
+on:
+  push:
+    branches:
+      - agent/add-answer-rule-intro
+    paths:
+      - .github/workflows/fix-deck-rule-ink.yml
+
+permissions:
+  contents: write
+
+jobs:
+  fix:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: agent/add-answer-rule-intro
+
+      - name: Append stronger RULE 00 override
+        shell: bash
+        run: |
+          if grep -q 'RULE 00 final ink override' deck/style.css; then
+            echo 'Override already exists'
+            exit 1
+          fi
+          cat >> deck/style.css <<'CSS'
+
+          /* RULE 00 final ink override */
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p,
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide p strong,
+          .section-block[aria-labelledby="deckAnswerRuleTitle"] .talk-guide > strong {
+            color: var(--ink);
+          }
+          CSS
+
+      - name: Validate
+        shell: bash
+        run: |
+          git diff --check
+          grep -n -A8 'RULE 00 final ink override' deck/style.css
+
+      - name: Commit
+        shell: bash
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add deck/style.css
+          git commit -m "DECKのRULE 00本文色をQ.01相当へ統一"
+          git push origin HEAD:agent/add-answer-rule-intro
