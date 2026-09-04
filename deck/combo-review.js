@@ -44,10 +44,13 @@
     }
 
     .combo-panel li {
-      position: relative;
+      display: grid;
+      grid-template-columns: 30px minmax(0, 1fr);
+      align-items: center;
+      gap: 10px;
       min-height: 54px;
       margin: 0;
-      padding: 10px 12px 10px 46px;
+      padding: 10px 12px;
       font-size: .88rem;
       font-weight: 500;
       line-height: 1.55;
@@ -57,13 +60,12 @@
     }
 
     .combo-panel li::before {
-      position: absolute;
-      top: 10px;
-      left: 10px;
       display: grid;
       place-items: center;
-      width: 27px;
-      height: 27px;
+      align-self: center;
+      justify-self: center;
+      width: 28px;
+      height: 28px;
       content: counter(combo-card, decimal-leading-zero);
       color: var(--text-dark);
       font-size: .68rem;
@@ -81,32 +83,45 @@
     }
 
     .detail-review > summary {
-      min-height: 52px;
-      padding: 14px 54px 14px 18px;
-      color: var(--ink);
-      font-size: .86rem;
+      position: relative;
+      min-height: 58px;
+      padding: 16px 60px 16px 18px;
+      color: var(--text-dark);
+      font-size: .92rem;
       font-weight: 700;
-      letter-spacing: .04em;
-      background: var(--surface-3);
-      border: 2px solid var(--accent-dark);
-      box-shadow: 3px 3px 0 var(--shadow);
+      letter-spacing: .045em;
+      cursor: pointer;
+      background: var(--accent);
+      border: 2px solid var(--ink);
+      border-left: 9px solid var(--accent-dark);
+      box-shadow: 5px 5px 0 var(--shadow-strong);
       transition: transform .12s ease, box-shadow .12s ease, background .12s ease;
+    }
+
+    .detail-review > summary::after {
+      right: 22px;
+      width: 12px;
+      height: 12px;
+      border-width: 0 3px 3px 0;
     }
 
     .detail-review > summary:hover {
       transform: translate(1px, 1px);
-      box-shadow: 2px 2px 0 var(--shadow);
-      background: var(--main);
+      box-shadow: 4px 4px 0 var(--shadow-strong);
+      background: var(--ink);
     }
 
     .detail-review > summary:active {
-      transform: translate(3px, 3px);
-      box-shadow: none;
+      transform: translate(4px, 4px);
+      box-shadow: 1px 1px 0 var(--shadow-strong);
     }
 
     .detail-review[open] > summary {
-      color: var(--text-dark);
-      background: var(--accent);
+      color: var(--ink);
+      background: var(--surface-3);
+      border-color: var(--accent);
+      border-left-color: var(--accent);
+      box-shadow: 4px 4px 0 var(--shadow);
     }
 
     .detail-review .review-grid {
@@ -128,19 +143,17 @@
       }
 
       .combo-panel li {
+        grid-template-columns: 30px minmax(0, 1fr);
+        gap: 9px;
         min-height: 50px;
-        padding: 9px 10px 9px 43px;
+        padding: 9px 10px;
         font-size: .86rem;
       }
 
-      .combo-panel li::before {
-        top: 9px;
-        left: 9px;
-      }
-
       .detail-review > summary {
-        padding-left: 14px;
-        font-size: .82rem;
+        min-height: 56px;
+        padding: 15px 54px 15px 14px;
+        font-size: .84rem;
       }
     }
   `;
@@ -177,8 +190,8 @@
       const syncDetailLabel = () => {
         if (!summary) return;
         summary.textContent = detail.open
-          ? "DETAIL REVIEWを閉じる"
-          : "DETAIL REVIEWを開く";
+          ? "DETAIL REVIEW / 詳細情報を閉じる"
+          : "DETAIL REVIEW / 必要なら詳しく見る";
       };
 
       syncDetailLabel();
