@@ -1,6 +1,7 @@
 /* ================================================================
    INTERVIEW PRACTICE DECK / QUICK REVIEW BOOTSTRAP
-   QUICK REVIEW本体を読み込んだあと、視認性補正とCOMBO拡張を適用する。
+   QUICK REVIEW本体を読み込んだあと、視認性補正・COMBO拡張・
+   質問カード用アイコンを適用する。
    ================================================================ */
 
 (() => {
@@ -24,6 +25,8 @@
 
   loadScript("quick-review-core.js", () => {
     improveQuickAxisContrast();
-    loadScript("combo-review.js", () => {});
+    loadScript("combo-review.js", () => {
+      loadScript("card-icon.js", () => {});
+    });
   });
 })();
