@@ -1,6 +1,6 @@
 /* ================================================================
    INTERVIEW PRACTICE DECK / QUICK REVIEW BOOTSTRAP
-   QUICK REVIEW本体を読み込んだあと、COMBO拡張を適用する。
+   QUICK REVIEW本体を読み込んだあと、視認性補正とCOMBO拡張を適用する。
    ================================================================ */
 
 (() => {
@@ -11,7 +11,19 @@
     document.body.appendChild(script);
   }
 
+  function improveQuickAxisContrast() {
+    const style = document.createElement("style");
+    style.textContent = `
+      .quick-axis p {
+        color: var(--ink);
+        font-weight: 500;
+      }
+    `;
+    document.head.appendChild(style);
+  }
+
   loadScript("quick-review-core.js", () => {
+    improveQuickAxisContrast();
     loadScript("combo-review.js", () => {});
   });
 })();
