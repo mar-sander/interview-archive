@@ -41,9 +41,13 @@
           <input
             id="authPassword"
             name="password"
-            type="password"
-            autocomplete="current-password"
+            type="text"
+            autocomplete="off"
             inputmode="text"
+            autocapitalize="none"
+            spellcheck="false"
+            enterkeyhint="go"
+            style="-webkit-text-security: disc;"
             aria-describedby="authError"
           >
           <button type="submit">DECKを開く</button>
@@ -232,7 +236,7 @@
           <div class="finish-task">
             <p class="finish-task__label">LAST TASK</p>
             <p>10問の中から、うまく答えられなかったものを<strong>3問だけ</strong>選んでください。</p>
-            <p>REVIEWを閉じて、もう一度その質問とCOMBOに声を出して答えてみましょう。</p>
+            <p>REVIEWを閉じて、もう一度そのQUESTIONとCOMBOに声を出して答えてみましょう。</p>
           </div>
 
           <p>完璧な文章を作る必要はありません。</p>
