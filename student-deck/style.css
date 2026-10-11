@@ -1031,6 +1031,31 @@ footer p {
   font-weight: 600;
 }
 
+.mode-choice__action {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.mode-choice:focus-visible {
+  background: var(--surface-3);
+  border-color: var(--accent);
+}
+
+@media (hover: hover) {
+  .mode-choice:hover {
+    background: var(--surface-3);
+    border-color: var(--accent);
+  }
+}
+
+.mode-choice:active {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
 .mode-choice:focus-visible,
 .top-return:focus-visible,
 .review-toggle:focus-visible {
