@@ -15,6 +15,8 @@ const universitySource = fs.readFileSync(path.join(deckDir, 'university-cards.js
 const html = fs.readFileSync(path.join(deckDir, 'index.html'), 'utf8');
 const css = fs.readFileSync(path.join(deckDir, 'style.css'), 'utf8');
 const baseline = JSON.parse(fs.readFileSync(path.join(__dirname, 'content-baseline.json'), 'utf8'));
+// 内容の正本は維持し、変更範囲の比較元だけはStageの開始mainを指定できます。
+const scopeBase = process.env.AITH_SCOPE_BASE || 'af55f36140f8ddcbb15941c10e8031138e05ec58';
 const sha256 = (value) => crypto.createHash('sha256').update(value).digest('hex');
 
 function employmentBlock(text) {
@@ -76,7 +78,9 @@ test('Android日本語入力と視覚的な伏字の属性を保持', () => {
   })) {
     assert.ok(input.includes(`${key}="${value}"`), key);
   }
-  assert.ok(input.includes('-webkit-text-security: disc'));
+  assert.doesNotMatch(input, /style=/);
+  assert.match(css, /\.auth-row input \{[^}]*-webkit-text-security: disc;/);
+  assert.match(css, /\.auth-row input:focus \{[^}]*-webkit-text-security: none;/);
   assert.equal((html.match(/<input\b/g) || []).length, 1);
   assert.match(html, /<button type="submit">DECKを開く<\/button>/);
 });
@@ -146,6 +150,6 @@ test('検索除外・収集しない方針・旧説明の除去', () => {
 });
 
 test('公開質問集・教員deckを含むstudent-deck以外のtrackedファイルに差分なし', () => {
-  const names = execFileSync('git', ['diff', '--name-only', baseline.startMain, '--'], { cwd: repoDir, encoding: 'utf8' }).trim().split('\n').filter(Boolean);
+  const names = execFileSync('git', ['diff', '--name-only', scopeBase, '--'], { cwd: repoDir, encoding: 'utf8' }).trim().split('\n').filter(Boolean);
   assert.ok(names.every((name) => name.startsWith('student-deck/')), names.join('\n'));
 });
