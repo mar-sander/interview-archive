@@ -209,7 +209,7 @@ for (const mode of ['university', 'employment']) {
         assert.equal(frames.length, 1);
         frames.shift()();
         assert.deepEqual(JSON.parse(JSON.stringify(calls)), [{
-          behavior: reduced ? 'instant' : 'smooth', block: 'start', inline: 'nearest'
+          behavior: 'instant', block: 'start', inline: 'nearest'
         }]);
         assert.equal(doc.activeElement, toggle, '移動先へのfocusを強制しない');
         toggle.click();

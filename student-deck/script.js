@@ -767,9 +767,8 @@ function bindReviewToggles() {
       requestAnimationFrame(() => {
         // 待機中にTOPへ戻ったりREVIEWを再度開いた場合は移動しません。
         if (!card.isConnected || !panel.hidden || !destination) return;
-        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
         destination.scrollIntoView({
-          behavior: reducedMotion ? "instant" : "smooth",
+          behavior: "instant",
           block: "start",
           inline: "nearest"
         });
