@@ -1,10 +1,9 @@
 // ================================================================
-// INTERVIEW PRACTICE DECK
-// EMPLOYMENT / FINAL TRAINING
+// INTERVIEW FINAL DECK / ACE IN THE HOLE
 //
 // このファイルは、
 // 1) 入室パスワード認証
-// 2) 就職E01〜E10の描画
+// 2) TOP・進学／就職の切替と10枚の描画
 // 3) REVIEWの開閉
 // を担当します。
 //
@@ -16,7 +15,7 @@
 // 00. 入室パスワード認証
 // ----------------------------------------------------------------
 const AUTH_KEY = "employment_final_training_auth_v1";
-const AUTH_HASH = "2f437e589a83bb85585630820b729a74ba1c1d068f87f7d614ec1cdcb651fc56";
+const AUTH_HASH = "29954b90c2f76b1ab2642b1a06488f43295896b3377bff95db94db41b719c22d";
 
 async function sha256(value) {
   if (!window.crypto?.subtle) {
@@ -567,10 +566,10 @@ function stars(level) {
   return "★".repeat(level) + "☆".repeat(Math.max(0, 3 - level));
 }
 
-function paragraphize(lines) {
+function paragraphize(lines, highlight = true) {
   return lines
     .map((line, index) => {
-      const cls = index === 2 && lines.length >= 5 ? ' class="intent-key"' : "";
+      const cls = highlight && index === 2 && lines.length >= 5 ? ' class="intent-key"' : "";
       return `<p${cls}>${escapeHtml(line)}</p>`;
     })
     .join("");
@@ -593,11 +592,14 @@ function renderSigns(items, type) {
 // ----------------------------------------------------------------
 // 03. 10枚を描画
 // ----------------------------------------------------------------
-function renderCards() {
+function renderCards(mode) {
   const root = document.getElementById("cards");
   if (!root) return;
 
-  root.innerHTML = cards
+  const deck = mode === "university" ? universityCards : cards;
+  const isUniversity = mode === "university";
+
+  root.innerHTML = deck
     .map((card, index) => {
       const panelId = `review-${card.id}`;
 
@@ -607,8 +609,8 @@ function renderCards() {
             <div class="card-topline">
               <p class="card-id">${escapeHtml(card.id)} / ${String(index + 1).padStart(2, "0")} OF 10</p>
               <div class="card-tags">
-                <span class="tag">就職</span>
-                <span class="tag tag--solid">本番可能性 ${stars(card.reality)}</span>
+                <span class="tag">${isUniversity ? "進学" : "就職"}</span>
+                ${isUniversity ? "" : `<span class="tag tag--solid">本番可能性 ${stars(card.reality)}</span>`}
               </div>
             </div>
 
@@ -668,7 +670,7 @@ function renderCards() {
             <article class="review-block">
               <p class="review-block__code">QUESTION INTENT</p>
               <h4>この質問で見られやすいこと</h4>
-              ${paragraphize(card.intent)}
+              ${paragraphize(card.intent, !isUniversity)}
             </article>
 
             <article class="review-block">
@@ -716,6 +718,7 @@ function renderCards() {
               <p class="retry-lead">答えを直すのではなく、もう一度考える。</p>
               <p class="retry-prompt">${escapeHtml(card.retry)}</p>
             </article>
+            <button class="review-close" type="button" aria-controls="${panelId}">確認を閉じる</button>
           </section>
         </article>
       `;
@@ -730,14 +733,21 @@ function renderCards() {
 // ----------------------------------------------------------------
 function bindReviewToggles() {
   document.addEventListener("click", (event) => {
-    const button = event.target.closest(".review-toggle");
+    const closeButton = event.target.closest(".review-close");
+    const button = closeButton
+      ? closeButton.closest(".practice-card").querySelector(".review-toggle")
+      : event.target.closest(".review-toggle");
     if (!button) return;
 
     const panelId = button.getAttribute("aria-controls");
     const panel = document.getElementById(panelId);
     if (!panel) return;
 
-    const willOpen = button.getAttribute("aria-expanded") !== "true";
+    const willOpen = !closeButton && button.getAttribute("aria-expanded") !== "true";
+
+    // 非表示になる操作部から上側トグルへフォーカスを戻します。
+    // focus自体によるスクロールを防ぎ、下側操作の移動は閉じたあとに行います。
+    if (closeButton) button.focus({ preventScroll: true });
 
     button.setAttribute("aria-expanded", String(willOpen));
     panel.hidden = !willOpen;
@@ -748,13 +758,90 @@ function bindReviewToggles() {
         ? "REVIEW｜確認を閉じる"
         : "REVIEW｜答えたあとに確認する";
     }
+
+    if (closeButton) {
+      const card = closeButton.closest(".practice-card");
+      const destination = card.nextElementSibling || document.getElementById("finish");
+
+      // 閉じた状態のレイアウトで、次カードの上辺（最後はFINISH）へ合わせます。
+      requestAnimationFrame(() => {
+        // 待機中にTOPへ戻ったりREVIEWを再度開いた場合は移動しません。
+        if (!card.isConnected || !panel.hidden || !destination) return;
+        destination.scrollIntoView({
+          behavior: "instant",
+          block: "start",
+          inline: "nearest"
+        });
+      });
+    }
   });
 }
 
 
 // ----------------------------------------------------------------
-// 05. 起動
+// 05. TOP・進学／就職の切替
+// カードは切替ごとに描画し直し、REVIEWを必ず閉じて開始します。
+// 進路や回答の状態は保存しません。
 // ----------------------------------------------------------------
+const modes = {
+  university: {
+    title: "UNIVERSITY｜進学",
+    subtitle: "4年制大学",
+    code: "04 / UNIVERSITY DECK",
+    deckTitle: "進学面接・直前10枚。"
+  },
+  employment: {
+    title: "EMPLOYMENT｜就職",
+    subtitle: "企業就職",
+    code: "04 / EMPLOYMENT DECK",
+    deckTitle: "就職面接・直前10枚。"
+  }
+};
+
+function returnToTop({ focus = true } = {}) {
+  document.getElementById("trainingView").hidden = true;
+  document.getElementById("topView").hidden = false;
+  document.getElementById("cards").replaceChildren();
+  document.getElementById("trainingView").removeAttribute("data-mode");
+
+  if (focus) {
+    document.getElementById("topTitle").focus({ preventScroll: true });
+    window.scrollTo({ top: 0, behavior: "instant" });
+  }
+}
+
+function showMode(mode) {
+  const config = modes[mode];
+  if (!config) return;
+
+  const view = document.getElementById("trainingView");
+  view.dataset.mode = mode;
+  document.getElementById("modeTitle").textContent = config.title;
+  document.getElementById("modeSubtitle").textContent = config.subtitle;
+  document.getElementById("deckCode").textContent = config.code;
+  document.getElementById("deckTitle").textContent = config.deckTitle;
+  document.getElementById("employmentAxes").hidden = mode !== "employment";
+  renderCards(mode);
+
+  document.getElementById("topView").hidden = true;
+  view.hidden = false;
+  document.getElementById("modeTitle").focus({ preventScroll: true });
+  window.scrollTo({ top: 0, behavior: "instant" });
+}
+
+function bindModes() {
+  document.querySelectorAll("[data-mode]").forEach((button) => {
+    button.addEventListener("click", () => showMode(button.dataset.mode));
+  });
+  document.querySelectorAll("[data-return-top]").forEach((button) => {
+    button.addEventListener("click", () => returnToTop());
+  });
+}
+
+// ----------------------------------------------------------------
+// 06. 起動
+// ----------------------------------------------------------------
+returnToTop({ focus: false });
 bindAuth();
-renderCards();
+bindModes();
 bindReviewToggles();

@@ -1,6 +1,5 @@
 /* ================================================================
-   INTERVIEW PRACTICE DECK
-   EMPLOYMENT / FINAL TRAINING
+   INTERVIEW FINAL DECK / ACE IN THE HOLE
 
    Mobile First
    元のdeckの「カードを切る」世界観を残しながら、
@@ -672,6 +671,24 @@ h3 {
   font-weight: 700;
 }
 
+.review-close {
+  width: 100%;
+  min-height: 67px;
+  margin-top: 24px;
+  border: 1px solid var(--line);
+  border-radius: 0;
+  background: var(--surface-3);
+  padding: 16px 18px;
+  font-weight: 700;
+  text-align: left;
+  cursor: pointer;
+}
+
+.review-close:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
 .review-toggle__arrow {
   width: 16px;
   height: 16px;
@@ -888,6 +905,7 @@ footer {
   color: var(--muted);
   font-size: 0.73rem;
   line-height: 1.7;
+  text-align: center;
 }
 
 footer p {
@@ -988,5 +1006,116 @@ footer p {
 
   .finish-card {
     padding: 34px 34px;
+  }
+}
+
+/* ----------------------------------------------------------------
+   FINAL DECK：現行の配色・パネル・ボタン表現を継承
+   ---------------------------------------------------------------- */
+[hidden] {
+  display: none !important;
+}
+
+.deck-name {
+  margin: 16px 0 0;
+  color: var(--accent-deep);
+  font-family: var(--font-serif);
+  font-size: clamp(1.15rem, 5vw, 1.65rem);
+  letter-spacing: 0.1em;
+}
+
+.mode-choices {
+  margin-top: 34px;
+  display: grid;
+  gap: 12px;
+}
+
+.mode-choice {
+  display: grid;
+  gap: 6px;
+  width: 100%;
+  min-width: 0;
+  border: 1px solid var(--line);
+  border-left: 6px solid var(--accent);
+  border-radius: 0;
+  background: var(--surface);
+  padding: 20px 18px;
+  text-align: left;
+  cursor: pointer;
+}
+
+.mode-choice__title {
+  font-family: var(--font-serif);
+  font-size: 1.5rem;
+  font-weight: 600;
+}
+
+.mode-choice__action {
+  margin-top: 8px;
+  padding-top: 10px;
+  border-top: 1px solid var(--line-soft);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.mode-choice:focus-visible {
+  background: var(--surface-3);
+  border-color: var(--accent);
+}
+
+@media (hover: hover) {
+  .mode-choice:hover {
+    background: var(--surface-3);
+    border-color: var(--accent);
+  }
+}
+
+.mode-choice:active {
+  background: var(--surface-2);
+  border-color: var(--accent);
+}
+
+.mode-choice:focus-visible,
+.top-return:focus-visible,
+.review-toggle:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 4px;
+}
+
+.mode-heading {
+  padding-top: 34px;
+  padding-bottom: 34px;
+}
+
+.mode-heading h2 {
+  font-size: clamp(1.45rem, 6vw, 2.3rem);
+  overflow-wrap: anywhere;
+}
+
+.top-return {
+  min-height: 44px;
+  margin: 0 0 18px;
+  border: 1px solid var(--line-soft);
+  border-radius: 0;
+  background: var(--surface-2);
+  color: var(--muted);
+  padding: 8px 13px;
+  cursor: pointer;
+}
+
+.finish > .top-return {
+  margin: 28px 0 0;
+}
+
+/* 正本の段落と、最終カードのQUESTIONの改行を保持します。 */
+[data-mode="university"] .card-question,
+[data-mode="university"] .sign-item > p:not(.sign-item__title),
+[data-mode="university"] .retry-prompt {
+  white-space: pre-line;
+}
+
+@media (min-width: 720px) {
+  .mode-choices {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
   }
 }
