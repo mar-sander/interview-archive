@@ -303,6 +303,10 @@
             <p class="last-check-sendoff"><strong>目の前の人と、ちゃんと対話してこよう。</strong></p>
           </div>
         </section>
+
+        <div class="last-check-final-stage">
+          <a class="last-check-final-stage-link" href="student-deck/">FINAL STAGE →</a>
+        </div>
       </section>
     `);
   }
