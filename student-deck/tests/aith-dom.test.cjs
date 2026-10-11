@@ -175,3 +175,56 @@ for (const first of ['university', 'employment']) {
     await window.happyDOM.close();
   });
 }
+
+for (const mode of ['university', 'employment']) {
+  for (const reduced of [false, true]) {
+    test(`${mode}：全10枚の下側出口・FINISH・reduced motion=${reduced}`, async () => {
+      const window = createWindow({ savedHash: newHash });
+      const doc = window.document;
+      const frames = [];
+      window.requestAnimationFrame = (callback) => { frames.push(callback); return frames.length; };
+      window.matchMedia = (query) => {
+        assert.equal(query, '(prefers-reduced-motion: reduce)');
+        return { matches: reduced };
+      };
+      doc.querySelector(`[data-mode="${mode}"]`).click();
+      const cards = [...doc.querySelectorAll('.practice-card')];
+      for (const [index, card] of cards.entries()) {
+        const toggle = card.querySelector('.review-toggle');
+        const panel = card.querySelector('.review-panel');
+        const destination = cards[index + 1] || doc.getElementById('finish');
+        const calls = [];
+        destination.scrollIntoView = (options) => {
+          assert.equal(panel.hidden, true);
+          assert.equal(toggle.getAttribute('aria-expanded'), 'false');
+          calls.push(options);
+        };
+        toggle.click();
+        toggle.click();
+        assert.equal(frames.length, 0, '上側の開閉はスクロールを予約しない');
+        toggle.click();
+        card.querySelector('.review-close').click();
+        assert.equal(panel.hidden, true);
+        assert.equal(calls.length, 0, 'レイアウト更新前にスクロールしない');
+        assert.equal(frames.length, 1);
+        frames.shift()();
+        assert.deepEqual(JSON.parse(JSON.stringify(calls)), [{
+          behavior: reduced ? 'instant' : 'smooth', block: 'start', inline: 'nearest'
+        }]);
+        assert.equal(doc.activeElement, toggle, '移動先へのfocusを強制しない');
+        toggle.click();
+        assert.equal(panel.hidden, false, '閉じたカードも再度開ける');
+        toggle.click();
+      }
+      // フレーム待機中にモードを離れた場合、古いカードから移動しない。
+      let staleCalls = 0;
+      cards[1].scrollIntoView = () => staleCalls++;
+      cards[0].querySelector('.review-toggle').click();
+      cards[0].querySelector('.review-close').click();
+      doc.querySelector('[data-return-top]').click();
+      frames.shift()();
+      assert.equal(staleCalls, 0);
+      await window.happyDOM.close();
+    });
+  }
+}

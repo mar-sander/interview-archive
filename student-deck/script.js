@@ -745,7 +745,8 @@ function bindReviewToggles() {
 
     const willOpen = !closeButton && button.getAttribute("aria-expanded") !== "true";
 
-    // 非表示になる操作部から上側トグルへフォーカスを戻します。スクロールは行いません。
+    // 非表示になる操作部から上側トグルへフォーカスを戻します。
+    // focus自体によるスクロールを防ぎ、下側操作の移動は閉じたあとに行います。
     if (closeButton) button.focus({ preventScroll: true });
 
     button.setAttribute("aria-expanded", String(willOpen));
@@ -756,6 +757,23 @@ function bindReviewToggles() {
       label.textContent = willOpen
         ? "REVIEW｜確認を閉じる"
         : "REVIEW｜答えたあとに確認する";
+    }
+
+    if (closeButton) {
+      const card = closeButton.closest(".practice-card");
+      const destination = card.nextElementSibling || document.getElementById("finish");
+
+      // 閉じた状態のレイアウトで、次カードの上辺（最後はFINISH）へ合わせます。
+      requestAnimationFrame(() => {
+        // 待機中にTOPへ戻ったりREVIEWを再度開いた場合は移動しません。
+        if (!card.isConnected || !panel.hidden || !destination) return;
+        const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
+        destination.scrollIntoView({
+          behavior: reducedMotion ? "instant" : "smooth",
+          block: "start",
+          inline: "nearest"
+        });
+      });
     }
   });
 }
