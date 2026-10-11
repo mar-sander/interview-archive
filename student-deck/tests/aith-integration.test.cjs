@@ -129,14 +129,16 @@ test('既存就職カードの描画結果を開始mainと全文比較', () => {
     const initMarker = current ? 'returnToTop({ focus: false });' : 'bindAuth();\nrenderCards();';
     const context = { document: { getElementById: () => root } };
     vm.runInNewContext(text.slice(0, text.lastIndexOf(initMarker)) + (current ? '\nrenderCards("employment");' : '\nrenderCards();'), context);
-    return root.innerHTML.replace(/\s+/g, ' ').trim();
+    // 追加した閉じる操作部だけを除き、既存本文・構造を全文比較します。
+    return root.innerHTML.replace(/<button class="review-close"[^>]*>確認を閉じる<\/button>/g, '').replace(/\s+/g, ' ').trim();
   }
   assert.equal(render(source, true), render(old, false));
 });
 
 test('検索除外・収集しない方針・旧説明の除去', () => {
   assert.equal((html.match(/content="noindex,nofollow,noarchive,nosnippet"/g) || []).length, 2);
-  assert.ok(html.includes('氏名や回答内容を入力・送信・保存しません。'));
+  const footer = html.match(/<footer>[\s\S]*?<\/footer>/)[0];
+  assert.equal(footer.replace(/\s+/g, ' ').trim(), '<footer> <p>Copyright © M.M. All Rights Reserved.</p> </footer>');
   for (const text of [html, source, css, fs.readFileSync(path.join(deckDir, 'README.txt'), 'utf8')]) {
     assert.doesNotMatch(text, /臨時休校/);
   }

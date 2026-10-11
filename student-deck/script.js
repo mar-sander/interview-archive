@@ -718,6 +718,7 @@ function renderCards(mode) {
               <p class="retry-lead">答えを直すのではなく、もう一度考える。</p>
               <p class="retry-prompt">${escapeHtml(card.retry)}</p>
             </article>
+            <button class="review-close" type="button" aria-controls="${panelId}">確認を閉じる</button>
           </section>
         </article>
       `;
@@ -732,14 +733,20 @@ function renderCards(mode) {
 // ----------------------------------------------------------------
 function bindReviewToggles() {
   document.addEventListener("click", (event) => {
-    const button = event.target.closest(".review-toggle");
+    const closeButton = event.target.closest(".review-close");
+    const button = closeButton
+      ? closeButton.closest(".practice-card").querySelector(".review-toggle")
+      : event.target.closest(".review-toggle");
     if (!button) return;
 
     const panelId = button.getAttribute("aria-controls");
     const panel = document.getElementById(panelId);
     if (!panel) return;
 
-    const willOpen = button.getAttribute("aria-expanded") !== "true";
+    const willOpen = !closeButton && button.getAttribute("aria-expanded") !== "true";
+
+    // 非表示になる操作部から上側トグルへフォーカスを戻します。スクロールは行いません。
+    if (closeButton) button.focus({ preventScroll: true });
 
     button.setAttribute("aria-expanded", String(willOpen));
     panel.hidden = !willOpen;
