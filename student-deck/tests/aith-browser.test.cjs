@@ -92,7 +92,17 @@ for (const profile of profiles) {
     await page.evaluate(() => document.fonts.ready);
     const input = page.locator('#authPassword');
     assert.equal(await input.getAttribute('type'), 'text');
+    // 自動focusを含め、入力中だけ伏字解除。blur/focusで入力値は変わりません。
+    await page.waitForFunction(() => document.activeElement === document.getElementById('authPassword'));
+    assert.equal(await input.evaluate((el) => getComputedStyle(el).webkitTextSecurity), 'none');
+    await input.fill('エース');
+    await input.press('Tab');
     assert.equal(await input.evaluate((el) => getComputedStyle(el).webkitTextSecurity), 'disc');
+    assert.equal(await input.inputValue(), 'エース');
+    await activate('#authPassword');
+    assert.equal(await input.evaluate((el) => getComputedStyle(el).webkitTextSecurity), 'none');
+    assert.equal(await input.inputValue(), 'エース');
+    await input.fill('');
     await noOverflow(page);
     await screenshot(page, profile.name + '-auth');
     await activate('#authForm button');

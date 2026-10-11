@@ -163,6 +163,7 @@ body.auth-unlocked .auth-gate {
 }
 
 .auth-row input {
+  -webkit-text-security: disc;
   width: 100%;
   min-height: 50px;
   border: 1px solid var(--line);
@@ -174,6 +175,8 @@ body.auth-unlocked .auth-gate {
 }
 
 .auth-row input:focus {
+  /* 日本語IMEの変換中は文字を表示し、blur後は通常の伏字へ戻します。 */
+  -webkit-text-security: none;
   border-color: var(--accent);
   box-shadow: 0 0 0 2px rgba(227, 216, 201, 0.16);
 }
