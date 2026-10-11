@@ -274,6 +274,40 @@
   border-top: 1px solid var(--line-soft);
 }
 
+/* 本文が完結したあとに置く、最終ステージへの小さな入口。 */
+.last-check-final-stage {
+  display: flex;
+  justify-content: center;
+  padding: 8px 0 24px;
+}
+
+.last-check-final-stage-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 48px;
+  padding: 12px 22px;
+  color: var(--muted);
+  font-family: var(--font-body);
+  font-size: .82rem;
+  line-height: 1.5;
+  letter-spacing: .16em;
+  text-decoration: none;
+  border: 1px solid var(--line-soft);
+}
+
+.last-check-final-stage-link:hover {
+  color: var(--ink);
+  border-color: var(--line);
+  background: var(--accent-soft);
+}
+
+.last-check-final-stage-link:focus-visible {
+  color: var(--ink);
+  outline: 2px solid var(--muted);
+  outline-offset: 4px;
+}
+
 @media (max-width: 760px) {
   .last-check-pillars {
     grid-template-columns: 1fr;
